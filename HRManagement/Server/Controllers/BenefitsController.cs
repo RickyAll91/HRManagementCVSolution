@@ -16,12 +16,10 @@ namespace HRManagement.Server.Controllers
     public class BenefitsController : ControllerBase
     {
         private readonly IApplicationRepository<Benefit> repository;
-        private readonly ApplicationDbContext _context;
 
         public BenefitsController(IApplicationRepository<Benefit> repository, ApplicationDbContext context)
         {
             this.repository = repository;
-            _context = context;
         }
 
         // GET: api/Benefits
@@ -44,13 +42,16 @@ namespace HRManagement.Server.Controllers
 
         // GET: api/Benefits/5
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Benefit>> GetBenefit(int id)
         {
             if (repository.Context.Benefits == null!)
             {
                 return NotFound();
             }
-            var query = await repository
+            Benefit? query = await repository
                 .RecuperaByIdAsync(id);
 
             if (query == null)
@@ -82,11 +83,12 @@ namespace HRManagement.Server.Controllers
 
             try
             {
-                await repository.AggiornaAsync(benefit);
+                await repository
+                    .AggiornaAsync(benefit);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BenefitExists(id))
+                if (!BenefitEsiste(id))
                 {
                     return NotFound();
                 }
@@ -102,41 +104,50 @@ namespace HRManagement.Server.Controllers
         // POST: api/Benefits
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Benefit>> PostBenefit(Benefit benefit)
         {
-            if (_context.Benefits == null)
+            if (repository.Context.Benefits == null!)
             {
-                return Problem("Entity set 'ApplicationDbContext.Benefits'  is null.");
+                return Problem("L'entità ApplicationDbContext.Benefits è null.");
             }
-            _context.Benefits.Add(benefit);
-            await _context.SaveChangesAsync();
+
+            await repository
+                .CreaAsync(benefit);
 
             return CreatedAtAction("GetBenefit", new { id = benefit.BenefitId }, benefit);
         }
 
         // DELETE: api/Benefits/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         public async Task<IActionResult> DeleteBenefit(int id)
         {
-            if (_context.Benefits == null)
-            {
-                return NotFound();
-            }
-            var benefit = await _context.Benefits.FindAsync(id);
-            if (benefit == null)
+            if (repository.Context.Benefits == null!)
             {
                 return NotFound();
             }
 
-            _context.Benefits.Remove(benefit);
-            await _context.SaveChangesAsync();
+            Benefit? risultato = await repository
+                .RecuperaByIdAsync(id);
+
+            if (risultato == null)
+            {
+                return NotFound();
+            }
+
+            await repository
+                .EliminaAsync(risultato);
 
             return NoContent();
         }
 
-        private bool BenefitExists(int id)
+        private bool BenefitEsiste(int id)
         {
-            return (_context.Benefits?.Any(e => e.BenefitId == id)).GetValueOrDefault();
+            return (repository.Context.Benefits?.Any(e => e.BenefitId == id))
+                .GetValueOrDefault();
         }
     }
 }

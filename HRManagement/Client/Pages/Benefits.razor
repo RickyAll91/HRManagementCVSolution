@@ -1,19 +1,19 @@
-﻿@page "/titolistudio"
+﻿@page "/benefits"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using HRManagement.Shared.Models
 @attribute [Authorize]
 @inject HttpClient Http
 
-<PageTitle>Titoli di Studio</PageTitle>
+<PageTitle>Benefits</PageTitle>
 
-<h1>Titoli di Studio</h1>
+<h1>Benefits</h1>
 
-<a class="btn btn-primary" href="createtitolostudio">
+<a class="btn btn-primary" href="createhardskill">
     <i class="oi oi-pencil"></i> Inserisci
 </a>
 
-    @if (titoli == null)
+    @if (benefits== null)
 {
     <p><em>Caricamento...</em></p>
 }
@@ -22,17 +22,17 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Titolo di Studio</th>
+                <th>Benefit</th>
                 <th>Attiva</th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var t in titoli)
+            @foreach (var b in benefits)
             {
                 <tr>
-                    <td>@t.Descrizione</td>
-                    @if (t.Attivo == true)
+                    <td>@b.Descrizione</td>
+                    @if (b.Attivo == true)
                     {
                         <td>Sì</td>
                     }
@@ -41,10 +41,10 @@ else
                         <td>No</td>
                     }
                     <td>
-                        <a class="btn btn-info" href="edittitolistudio/@t.TitoloStudioId">
+                        <a class="btn btn-info" href="edithardskill/@b.BenefitId">
                             <i class="oi oi-pencil"></i> Modifica
-                        </a>
-                        <a class="btn btn-danger" href="deletetitolistudio/@t.TitoloStudioId">
+                        </a> 
+                        <a class="btn btn-danger" href="deletehardskill/@b.BenefitId">
                             <i class="oi oi-trash"></i> Elimina
                         </a>
                     </td>
@@ -56,14 +56,14 @@ else
 
 @code {
 
-    private List<TitoloStudio>? titoli;
+    private List<Benefit>? benefits;
     private int? idRicerca;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            titoli = await Http.GetFromJsonAsync<List<TitoloStudio>>($"api/TitoliStudio/{idRicerca}");
+            benefits = await Http.GetFromJsonAsync<List<Benefit>>($"api/Benefits/{idRicerca}");
         }
         catch (AccessTokenNotAvailableException exception)
         {

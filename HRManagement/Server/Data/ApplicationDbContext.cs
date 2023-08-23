@@ -8,7 +8,7 @@ namespace HRManagement.Server.Data
 {
     public partial class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
     {
-        public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions) {}
+        public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions) { }
 
         public virtual DbSet<Benefit> Benefits { get; set; }
 
@@ -213,7 +213,6 @@ namespace HRManagement.Server.Data
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_TitoloStudio_Dipendente_TitoloStudio");
             });
-
             OnModelCreatingPartial(modelBuilder);
         }
 

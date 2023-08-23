@@ -11,6 +11,8 @@ public partial class TipologiaColloquio
 
     [StringLength(50)]
     public string Descrizione { get; set; } = null!;
+    
+    public bool Attivo { get; set; }
 
     [InverseProperty("TipologiaColloquioNavigation")]
     public virtual ICollection<Colloquio> Colloqui { get; set; } = new List<Colloquio>();
