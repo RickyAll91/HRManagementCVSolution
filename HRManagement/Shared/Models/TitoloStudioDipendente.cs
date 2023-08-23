@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("TitoloStudio_Dipendente")]
-public partial class TitoloStudio_Dipendente
+public partial class TitoloStudioDipendente
 {
     [Key]
     public int TitoloStudioDipendenteId { get; set; }
@@ -14,10 +14,10 @@ public partial class TitoloStudio_Dipendente
     public int TitoloStudioId { get; set; }
 
     [ForeignKey("DipendenteId")]
-    [InverseProperty("TitoloStudio_Dipendentes")]
-    public virtual Dipendente Dipendente { get; set; } = null!;
+    [InverseProperty("TitoliStudioDipendenti")]
+    public virtual Dipendente DipendenteNavigation { get; set; } = null!;
 
     [ForeignKey("TitoloStudioId")]
-    [InverseProperty("TitoloStudio_Dipendentes")]
-    public virtual TitoloStudio TitoloStudio { get; set; } = null!;
+    [InverseProperty("TitoliStudioDipendenti")]
+    public virtual TitoloStudio TitoloStudioNavigation { get; set; } = null!;
 }

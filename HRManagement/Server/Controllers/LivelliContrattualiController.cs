@@ -9,52 +9,51 @@ using HRManagement.Server.Data;
 using HRManagement.Server.Repository;
 using HRManagement.Shared.Models;
 using NuGet.Protocol.Core.Types;
+using HRManagement.Client.Pages;
 
 namespace HRManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HardSkillsController : ControllerBase
+    public class LivelliContrattualiController : ControllerBase
     {
-        private readonly IApplicationRepository<HardSkill> repository;
+        private readonly IApplicationRepository<LivelloContrattuale> repository;
 
-        public HardSkillsController(IApplicationRepository<HardSkill> repository)
+        public LivelliContrattualiController(IApplicationRepository<LivelloContrattuale> repository)
         {
             this.repository = repository;
         }
 
-        // GET: api/HardSkills
+        // GET: api/LivelliContrattuali
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LivelloContrattuale>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<HardSkill>>> GetHardSkills()
+        public async Task<ActionResult<IEnumerable<LivelloContrattuale>>> GetLivelliContratto()
         {
-            if (repository.Context == null!)
+            if (repository.Context.LivelliContrattuali == null!)
             {
                 return NotFound();
             }
-            IEnumerable<HardSkill> risultato = await repository
+            IEnumerable<LivelloContrattuale> risultato = await repository
                 .RecuperaTuttoAsync();
-
             if (!risultato.Any())
             {
                 return NotFound();
             }
-
             return Ok(risultato);
         }
 
         // GET: api/HardSkills/5
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LivelliContratto>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<HardSkill>> GetHardSkill(int id)
+        public async Task<ActionResult<HardSkill>> GetLivelloContratto(int id)
         {
             if (repository.Context.HardSkills == null!)
             {
                 return NotFound();
             }
-            HardSkill? query = await repository
+            LivelloContrattuale? query = await repository
                 .RecuperaByIdAsync(id);
 
             if (query == null)
@@ -62,9 +61,9 @@ namespace HRManagement.Server.Controllers
                 return NotFound();
             }
 
-            List<HardSkill> risultato = new()
+            List<LivelloContrattuale?> risultato = new() 
             {
-                query
+                query 
             };
 
             return Ok(risultato);
@@ -76,19 +75,20 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> PutHardSkill(int id, HardSkill hardSkill)
+        public async Task<IActionResult> PutLivelloContratto(int id, LivelloContrattuale livelloContrattuale)
         {
-            if (id != hardSkill.HardSkillID)
+            if (id != livelloContrattuale.LivelloContrattoId)
             {
                 return BadRequest();
             }
             try
             {
-                await repository.AggiornaAsync(hardSkill);
+                await repository
+                    .AggiornaAsync(livelloContrattuale);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HardSkillEsiste(id))
+                if (!LivelloContrattoEsiste(id))
                 {
                     return NotFound();
                 }
@@ -104,30 +104,30 @@ namespace HRManagement.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(201)]
-        public async Task<ActionResult<HardSkill>> PostHardSkill(HardSkill hardSkill)
+        public async Task<ActionResult<LivelloContrattuale>> PostLivelloContratto(LivelloContrattuale livelloContrattuale)
         {
             if (repository.Context.HardSkills == null!)
             {
-                return Problem("L'entità ApplicationDbContext.HardSkills è null.");
+                return Problem("L'entità ApplicationDbContext.LivelloContratto è null.");
             }
 
             await repository
-                .CreaAsync(hardSkill);
+                .CreaAsync(livelloContrattuale);
 
-            return CreatedAtAction("GetHardSkill", new { id = hardSkill.HardSkillID }, hardSkill);
+            return CreatedAtAction("GetLivelloContratto", new { id = livelloContrattuale.LivelloContrattoId }, livelloContrattuale);
         }
 
         // DELETE: api/HardSkills/5
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteHardSkill(int id)
+        public async Task<IActionResult> DeleteLivelloContratto(int id)
         {
             if (repository.Context.HardSkills == null!)
             {
                 return NotFound();
             }
-            HardSkill? risultato = await repository
+            LivelloContrattuale? risultato = await repository
                 .RecuperaByIdAsync(id);
 
             if (risultato == null)
@@ -141,11 +141,12 @@ namespace HRManagement.Server.Controllers
             return NoContent();
         }
 
-        private bool HardSkillEsiste(int id)
+        private bool LivelloContrattoEsiste(int id)
         {
-            return (repository.Context.HardSkills?
-                .Any(e => e.HardSkillID == id))
+            return (repository.Context.LivelliContrattuali?
+                .Any(e => e.LivelloContrattoId == id))
                 .GetValueOrDefault();
         }
     }
 }
+

@@ -6,55 +6,55 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HRManagement.Server.Data;
-using HRManagement.Server.Repository;
 using HRManagement.Shared.Models;
-using NuGet.Protocol.Core.Types;
+using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HardSkillsController : ControllerBase
+    public class TipologiaDocumentiController : ControllerBase
     {
-        private readonly IApplicationRepository<HardSkill> repository;
+        private readonly IApplicationRepository<TipologiaDocumento> repository;
 
-        public HardSkillsController(IApplicationRepository<HardSkill> repository)
+        public TipologiaDocumentiController(IApplicationRepository<TipologiaDocumento> repository)
         {
             this.repository = repository;
         }
 
-        // GET: api/HardSkills
+        // GET: api/TipologiaDocumenti
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TipologiaDocumento>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<HardSkill>>> GetHardSkills()
+        public async Task<ActionResult<IEnumerable<TipologiaDocumento>>> GetTipiDocumento()
         {
-            if (repository.Context == null!)
+            if (repository.Context.TipologieDocumenti == null!)
             {
                 return NotFound();
             }
-            IEnumerable<HardSkill> risultato = await repository
+
+            IEnumerable<TipologiaDocumento> risultato = await repository
                 .RecuperaTuttoAsync();
 
             if (!risultato.Any())
             {
                 return NotFound();
             }
-
             return Ok(risultato);
         }
 
-        // GET: api/HardSkills/5
+
+        // GET: api/TipologiaDocumenti/5
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TipologiaDocumento>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<HardSkill>> GetHardSkill(int id)
+        public async Task<ActionResult<TipologiaDocumento>> GetTipoDocumento(int id)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TitoliStudio == null!)
             {
                 return NotFound();
             }
-            HardSkill? query = await repository
+            TipologiaDocumento? query = await repository
                 .RecuperaByIdAsync(id);
 
             if (query == null)
@@ -62,7 +62,7 @@ namespace HRManagement.Server.Controllers
                 return NotFound();
             }
 
-            List<HardSkill> risultato = new()
+            List<TipologiaDocumento?> risultato = new()
             {
                 query
             };
@@ -70,25 +70,26 @@ namespace HRManagement.Server.Controllers
             return Ok(risultato);
         }
 
-        // PUT: api/HardSkills/5
+        // PUT: api/TipologiaDocumenti/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> PutHardSkill(int id, HardSkill hardSkill)
+        public async Task<IActionResult> PutTipoDocumento(int id, TipologiaDocumento tipoDocumento)
         {
-            if (id != hardSkill.HardSkillID)
+            if (id != tipoDocumento.TipoDocumentoId)
             {
                 return BadRequest();
             }
+
             try
             {
-                await repository.AggiornaAsync(hardSkill);
+                await repository.AggiornaAsync(tipoDocumento);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HardSkillEsiste(id))
+                if (!TipoDocumentoEsiste(id))
                 {
                     return NotFound();
                 }
@@ -97,54 +98,53 @@ namespace HRManagement.Server.Controllers
                     throw;
                 }
             }
+
             return NoContent();
         }
 
-        // POST: api/HardSkills
+        // POST: api/TipologiaDocumenti
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(201)]
-        public async Task<ActionResult<HardSkill>> PostHardSkill(HardSkill hardSkill)
+        public async Task<ActionResult<TipologiaDocumento>> PostTipoDocumento(TipologiaDocumento tipoDocumento)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TipologieDocumenti == null!)
             {
-                return Problem("L'entità ApplicationDbContext.HardSkills è null.");
+                return Problem("L'entità ApplicationDbContext.TipologieDocumenti è null.");
             }
 
             await repository
-                .CreaAsync(hardSkill);
+                .CreaAsync(tipoDocumento);
 
-            return CreatedAtAction("GetHardSkill", new { id = hardSkill.HardSkillID }, hardSkill);
+            return CreatedAtAction("GetTipoDocumento", new { id = tipoDocumento.TipoDocumentoId }, tipoDocumento);
         }
 
-        // DELETE: api/HardSkills/5
+        // DELETE: api/TipologiaDocumenti/5
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteHardSkill(int id)
+        public async Task<IActionResult> DeleteTipoDocumento(int id)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TipologieDocumenti == null!)
             {
                 return NotFound();
             }
-            HardSkill? risultato = await repository
+            TipologiaDocumento? tipoDocumento = await repository
                 .RecuperaByIdAsync(id);
 
-            if (risultato == null)
+            if (tipoDocumento == null)
             {
                 return NotFound();
             }
 
-            await repository
-                .EliminaAsync(risultato);
+            await repository.EliminaAsync(tipoDocumento);
 
             return NoContent();
         }
 
-        private bool HardSkillEsiste(int id)
+        private bool TipoDocumentoEsiste(int id)
         {
-            return (repository.Context.HardSkills?
-                .Any(e => e.HardSkillID == id))
+            return (repository.Context.TipologieDocumenti?.Any(e => e.TipoDocumentoId == id))
                 .GetValueOrDefault();
         }
     }

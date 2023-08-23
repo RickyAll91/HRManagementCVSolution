@@ -15,5 +15,5 @@ public partial class TipologiaDocumento
     public bool Attivo { get; set; }
 
     [InverseProperty("TipoDocumentoNavigation")]
-    public virtual ICollection<Contratto> Contrattos { get; set; } = new List<Contratto>();
+    public virtual ICollection<Contratto> Contratti { get; set; } = new List<Contratto>();
 }

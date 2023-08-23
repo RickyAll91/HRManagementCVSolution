@@ -28,36 +28,36 @@ public partial class Dipendente
     public string? Utente { get; set; }
 
     [InverseProperty("HRNavigation")]
-    public virtual ICollection<Colloquio> ColloquioHRNavigations { get; set; } = new List<Colloquio>();
+    public virtual ICollection<Colloquio> ColloquiHr { get; set; } = new List<Colloquio>();
 
     [InverseProperty("ReferenteTecnicoNavigation")]
-    public virtual ICollection<Colloquio> ColloquioReferenteTecnicoNavigations { get; set; } = new List<Colloquio>();
+    public virtual ICollection<Colloquio> ColloquiReferenteTecnico { get; set; } = new List<Colloquio>();
 
     [ForeignKey("Contratto")]
-    [InverseProperty("Dipendentes")]
+    [InverseProperty("Dipendenti")]
     public virtual Contratto ContrattoNavigation { get; set; } = null!;
 
-    [InverseProperty("Dipendente")]
-    public virtual ICollection<HardSkill_Dipendente> HardSkill_Dipendentes { get; set; } = new List<HardSkill_Dipendente>();
+    [InverseProperty("DipendenteNavigation")]
+    public virtual ICollection<HardSkillDipendente> HardSkillsDipendenti { get; set; } = new List<HardSkillDipendente>();
 
     [ForeignKey("Mansione")]
-    [InverseProperty("Dipendentes")]
+    [InverseProperty("Dipendenti")]
     public virtual Mansione MansioneNavigation { get; set; } = null!;
 
     [ForeignKey("Sede")]
-    [InverseProperty("Dipendentes")]
+    [InverseProperty("Dipendenti")]
     public virtual Sede SedeNavigation { get; set; } = null!;
 
     [InverseProperty("ReferenteNavigation")]
-    public virtual ICollection<Sede> Sedes { get; set; } = new List<Sede>();
+    public virtual ICollection<Sede> Sedi { get; set; } = new List<Sede>();
 
-    [InverseProperty("Dipendente")]
-    public virtual ICollection<SoftSkill_Dipendente> SoftSkill_Dipendentes { get; set; } = new List<SoftSkill_Dipendente>();
+    [InverseProperty("DipendenteNavigation")]
+    public virtual ICollection<SoftSkillDipendente> SoftSkillsDipendenti { get; set; } = new List<SoftSkillDipendente>();
 
-    [InverseProperty("Dipendente")]
-    public virtual ICollection<TitoloStudio_Dipendente> TitoloStudio_Dipendentes { get; set; } = new List<TitoloStudio_Dipendente>();
+    [InverseProperty("DipendenteNavigation")]
+    public virtual ICollection<TitoloStudioDipendente> TitoliStudioDipendenti { get; set; } = new List<TitoloStudioDipendente>();
 
     [ForeignKey("Utente")]
-    [InverseProperty("Dipendentes")]
+    [InverseProperty("Dipendenti")]
     public virtual ApplicationUser? UtenteNavigation { get; set; }
 }

@@ -1,0 +1,73 @@
+﻿@page "/titolistudio"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using HRManagement.Shared.Models
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Titoli di Studio</PageTitle>
+
+<h1>Titoli di Studio</h1>
+
+<a class="btn btn-primary" href="createtitolostudio">
+    <i class="oi oi-pencil"></i> Inserisci
+</a>
+
+    @if (titoli == null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Skill</th>
+                <th>Attiva</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var t in titoli)
+            {
+                <tr>
+                    <td>@t.Descrizione</td>
+                    @if (t.Attivo == true)
+                    {
+                        <td>Sì</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                    <td>
+                        <a class="btn btn-info" href="edittitolistudio/@t.TitoloStudioId">
+                            <i class="oi oi-pencil"></i> Modifica
+                        </a>
+                        <a class="btn btn-danger" href="deletetitolistudio/@t.TitoloStudioId">
+                            <i class="oi oi-trash"></i> Elimina
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<TitoloStudio>? titoli;
+    private int? idRicerca;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            titoli = await Http.GetFromJsonAsync<List<TitoloStudio>>($"api/TitoliStudio/{idRicerca}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HRManagement.Server.Data;
+using HRManagement.Server.Repository;
 using HRManagement.Shared.Models;
+using NuGet.Protocol.Core.Types;
 
 namespace HRManagement.Server.Controllers
 {
@@ -14,61 +16,81 @@ namespace HRManagement.Server.Controllers
     [ApiController]
     public class SoftSkillsController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IApplicationRepository<SoftSkill> repository;
 
-        public SoftSkillsController(ApplicationDbContext context)
+        public SoftSkillsController(IApplicationRepository<SoftSkill> repository)
         {
-            _context = context;
+            this.repository = repository;
         }
 
         // GET: api/SoftSkills
         [HttpGet]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SoftSkill>))]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<IEnumerable<SoftSkill>>> GetSoftSkills()
         {
-            if (_context.SoftSkills == null)
+            if (repository.Context.SoftSkills == null!)
             {
                 return NotFound();
             }
-            return await _context.SoftSkills.ToListAsync();
+
+            IEnumerable<SoftSkill> risultato = await repository
+                .RecuperaTuttoAsync();
+
+            if (!risultato.Any())
+            {
+                return NotFound();
+            }
+            return Ok(risultato);
         }
+
 
         // GET: api/SoftSkills/5
         [HttpGet("{id}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<SoftSkill>))]
+        [ProducesResponseType(404)]
         public async Task<ActionResult<SoftSkill>> GetSoftSkill(int id)
         {
-            if (_context.SoftSkills == null)
+            if (repository.Context.SoftSkills == null!)
             {
                 return NotFound();
             }
-            var softSkill = await _context.SoftSkills.FindAsync(id);
+            SoftSkill? query = await repository
+                  .RecuperaByIdAsync(id);
 
-            if (softSkill == null)
+            if (query == null)
             {
                 return NotFound();
             }
 
-            return softSkill;
+            List<SoftSkill?> risultato = new()
+            {
+                query
+            };
+
+            return Ok(risultato);
         }
 
         // PUT: api/SoftSkills/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutSoftSkill(int id, SoftSkill softSkill)
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public async Task<IActionResult> PutSoftSkill(int id, SoftSkill skill)
         {
-            if (id != softSkill.SoftSkillId)
+            if (id != skill.SoftSkillId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(softSkill).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                await repository.AggiornaAsync(skill);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!SoftSkillExists(id))
+                if (!SoftSkillEsiste(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +103,50 @@ namespace HRManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/SoftSkills
+        // POST: api/TitoliStudio
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<SoftSkill>> PostSoftSkill(SoftSkill softSkill)
+        [ProducesResponseType(201)]
+        public async Task<ActionResult<SoftSkill>> PostTitoloStudio(SoftSkill skill)
         {
-            if (_context.SoftSkills == null)
+            if (repository.Context.SoftSkills == null!)
             {
-                return Problem("Entity set 'ApplicationDbContext.SoftSkills'  is null.");
+                return Problem("L'entità ApplicationDbContext.SoftSkills è null.");
             }
-            _context.SoftSkills.Add(softSkill);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetSoftSkill", new { id = softSkill.SoftSkillId }, softSkill);
+            await repository
+                .CreaAsync(skill);
+
+            return CreatedAtAction("GetSoftSkill", new { id = skill.SoftSkillId }, skill);
         }
 
-        // DELETE: api/SoftSkills/5
+        // DELETE: api/TitoliStudio/5
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
         public async Task<IActionResult> DeleteSoftSkill(int id)
         {
-            if (_context.SoftSkills == null)
+            if (repository.Context.SoftSkills == null!)
             {
                 return NotFound();
             }
-            var softSkill = await _context.SoftSkills.FindAsync(id);
-            if (softSkill == null)
+            SoftSkill? skill = await repository
+                .RecuperaByIdAsync(id);
+
+            if (skill == null)
             {
                 return NotFound();
             }
 
-            _context.SoftSkills.Remove(softSkill);
-            await _context.SaveChangesAsync();
+            await repository.EliminaAsync(skill);
 
             return NoContent();
         }
 
-        private bool SoftSkillExists(int id)
+        private bool SoftSkillEsiste(int id)
         {
-            return (_context.SoftSkills?.Any(e => e.SoftSkillId == id)).GetValueOrDefault();
+            return (repository.Context.SoftSkills?.Any(e => e.SoftSkillId == id))
+                .GetValueOrDefault();
         }
     }
 }

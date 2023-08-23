@@ -25,22 +25,22 @@ namespace HRManagement.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Colloquio>>> GetColloquios()
         {
-            if (_context.Colloquios == null)
+            if (_context.Colloqui == null)
             {
                 return NotFound();
             }
-            return await _context.Colloquios.ToListAsync();
+            return await _context.Colloqui.ToListAsync();
         }
 
         // GET: api/Colloqui/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Colloquio>> GetColloquio(int id)
         {
-            if (_context.Colloquios == null)
+            if (_context.Colloqui == null)
             {
                 return NotFound();
             }
-            var colloquio = await _context.Colloquios.FindAsync(id);
+            var colloquio = await _context.Colloqui.FindAsync(id);
 
             if (colloquio == null)
             {
@@ -86,11 +86,11 @@ namespace HRManagement.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Colloquio>> PostColloquio(Colloquio colloquio)
         {
-            if (_context.Colloquios == null)
+            if (_context.Colloqui == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Colloquios'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Colloqui'  is null.");
             }
-            _context.Colloquios.Add(colloquio);
+            _context.Colloqui.Add(colloquio);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetColloquio", new { id = colloquio.ColloquioId }, colloquio);
@@ -100,17 +100,17 @@ namespace HRManagement.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteColloquio(int id)
         {
-            if (_context.Colloquios == null)
+            if (_context.Colloqui == null)
             {
                 return NotFound();
             }
-            var colloquio = await _context.Colloquios.FindAsync(id);
+            var colloquio = await _context.Colloqui.FindAsync(id);
             if (colloquio == null)
             {
                 return NotFound();
             }
 
-            _context.Colloquios.Remove(colloquio);
+            _context.Colloqui.Remove(colloquio);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace HRManagement.Server.Controllers
 
         private bool ColloquioExists(int id)
         {
-            return (_context.Colloquios?.Any(e => e.ColloquioId == id)).GetValueOrDefault();
+            return (_context.Colloqui?.Any(e => e.ColloquioId == id)).GetValueOrDefault();
         }
     }
 }

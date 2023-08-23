@@ -1,0 +1,73 @@
+﻿@page "/hardskills"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using HRManagement.Shared.Models
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Hard Skills</PageTitle>
+
+<h1>Hard Skills</h1>
+
+<a class="btn btn-primary" href="createhardskill">
+    <i class="oi oi-pencil"></i> Inserisci
+</a>
+
+    @if (hardskills == null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Skill</th>
+                <th>Attiva</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var skill in hardskills)
+            {
+                <tr>
+                    <td>@skill.Descrizione</td>
+                    @if (skill.Attivo == true)
+                    {
+                        <td>Sì</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                    <td>
+                        <a class="btn btn-info" href="edithardskill/@skill.HardSkillID">
+                            <i class="oi oi-pencil"></i> Modifica
+                        </a> 
+                        <a class="btn btn-danger" href="deletehardskill/@skill.HardSkillID">
+                            <i class="oi oi-trash"></i> Elimina
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<HardSkill>? hardskills;
+    private int? idRicerca;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            hardskills = await Http.GetFromJsonAsync<List<HardSkill>>($"api/HardSkills/{idRicerca}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

@@ -14,9 +14,9 @@ public partial class TitoloStudio
 
     public bool Attivo { get; set; }
 
-    [InverseProperty("TitoloStudio")]
-    public virtual ICollection<TitoloStudio_Candidato> TitoloStudio_Candidatos { get; set; } = new List<TitoloStudio_Candidato>();
+    [InverseProperty("TitoloStudioNavigation")]
+    public virtual ICollection<TitoloStudioCandidato> TitoliStudioCandidati { get; set; } = new List<TitoloStudioCandidato>();
 
-    [InverseProperty("TitoloStudio")]
-    public virtual ICollection<TitoloStudio_Dipendente> TitoloStudio_Dipendentes { get; set; } = new List<TitoloStudio_Dipendente>();
+    [InverseProperty("TitoloStudioNavigation")]
+    public virtual ICollection<TitoloStudioDipendente> TitoliStudioDipendenti { get; set; } = new List<TitoloStudioDipendente>();
 }

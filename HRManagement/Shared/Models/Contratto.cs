@@ -18,21 +18,21 @@ public partial class Contratto
 
     public int TipologiaContratto { get; set; }
 
-    [InverseProperty("Contratto")]
-    public virtual ICollection<Benefits_Contratti> Benefits_Contrattis { get; set; } = new List<Benefits_Contratti>();
+    [InverseProperty("ContrattoNavigation")]
+    public virtual ICollection<BenefitContratto> BenefitsContratti { get; set; } = new List<BenefitContratto>();
 
     [InverseProperty("ContrattoNavigation")]
-    public virtual ICollection<Dipendente> Dipendentes { get; set; } = new List<Dipendente>();
+    public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
 
     [ForeignKey("LivelloContrattuale")]
-    [InverseProperty("Contrattos")]
+    [InverseProperty("Contratti")]
     public virtual LivelloContrattuale LivelloContrattualeNavigation { get; set; } = null!;
 
     [ForeignKey("TipoDocumento")]
-    [InverseProperty("Contrattos")]
+    [InverseProperty("Contratti")]
     public virtual TipologiaDocumento TipoDocumentoNavigation { get; set; } = null!;
 
     [ForeignKey("TipologiaContratto")]
-    [InverseProperty("Contrattos")]
+    [InverseProperty("Contratti")]
     public virtual TipologiaContratto TipologiaContrattoNavigation { get; set; } = null!;
 }

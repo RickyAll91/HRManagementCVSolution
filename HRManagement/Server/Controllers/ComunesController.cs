@@ -21,26 +21,26 @@ namespace HRManagement.Server.Controllers
             _context = context;
         }
 
-        // GET: api/Comunes
+        // GET: api/Comuni
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Comune>>> GetComunes()
         {
-            if (_context.Comunes == null)
+            if (_context.Comuni == null)
             {
                 return NotFound();
             }
-            return await _context.Comunes.ToListAsync();
+            return await _context.Comuni.ToListAsync();
         }
 
-        // GET: api/Comunes/5
+        // GET: api/Comuni/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Comune>> GetComune(int id)
         {
-            if (_context.Comunes == null)
+            if (_context.Comuni == null)
             {
                 return NotFound();
             }
-            var comune = await _context.Comunes.FindAsync(id);
+            var comune = await _context.Comuni.FindAsync(id);
 
             if (comune == null)
             {
@@ -50,7 +50,7 @@ namespace HRManagement.Server.Controllers
             return comune;
         }
 
-        // PUT: api/Comunes/5
+        // PUT: api/Comuni/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutComune(int id, Comune comune)
@@ -81,36 +81,36 @@ namespace HRManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Comunes
+        // POST: api/Comuni
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Comune>> PostComune(Comune comune)
         {
-            if (_context.Comunes == null)
+            if (_context.Comuni == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Comunes'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Comuni'  is null.");
             }
-            _context.Comunes.Add(comune);
+            _context.Comuni.Add(comune);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetComune", new { id = comune.ComuneId }, comune);
         }
 
-        // DELETE: api/Comunes/5
+        // DELETE: api/Comuni/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteComune(int id)
         {
-            if (_context.Comunes == null)
+            if (_context.Comuni == null)
             {
                 return NotFound();
             }
-            var comune = await _context.Comunes.FindAsync(id);
+            var comune = await _context.Comuni.FindAsync(id);
             if (comune == null)
             {
                 return NotFound();
             }
 
-            _context.Comunes.Remove(comune);
+            _context.Comuni.Remove(comune);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace HRManagement.Server.Controllers
 
         private bool ComuneExists(int id)
         {
-            return (_context.Comunes?.Any(e => e.ComuneId == id)).GetValueOrDefault();
+            return (_context.Comuni?.Any(e => e.ComuneId == id)).GetValueOrDefault();
         }
     }
 }

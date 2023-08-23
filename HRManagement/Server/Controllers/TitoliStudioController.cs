@@ -8,53 +8,53 @@ using Microsoft.EntityFrameworkCore;
 using HRManagement.Server.Data;
 using HRManagement.Server.Repository;
 using HRManagement.Shared.Models;
-using NuGet.Protocol.Core.Types;
 
 namespace HRManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HardSkillsController : ControllerBase
+    public class TitoliStudioController : ControllerBase
     {
-        private readonly IApplicationRepository<HardSkill> repository;
+        IApplicationRepository<TitoloStudio> repository;
 
-        public HardSkillsController(IApplicationRepository<HardSkill> repository)
+        public TitoliStudioController(IApplicationRepository<TitoloStudio> repository)
         {
             this.repository = repository;
         }
 
-        // GET: api/HardSkills
+        // GET: api/TitoliStudio
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TitoloStudio>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<HardSkill>>> GetHardSkills()
+        public async Task<ActionResult<IEnumerable<TitoloStudio>>> GetTitoliStudio()
         {
-            if (repository.Context == null!)
+            if (repository.Context.TitoliStudio == null!)
             {
                 return NotFound();
             }
-            IEnumerable<HardSkill> risultato = await repository
+
+            IEnumerable<TitoloStudio> risultato = await repository
                 .RecuperaTuttoAsync();
 
             if (!risultato.Any())
             {
                 return NotFound();
             }
-
             return Ok(risultato);
         }
 
-        // GET: api/HardSkills/5
+
+        // GET: api/TitoliStudio/5
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TitoloStudio>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<HardSkill>> GetHardSkill(int id)
+        public async Task<ActionResult<TitoloStudio>> GetTitoloStudio(int id)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TitoliStudio == null!)
             {
                 return NotFound();
             }
-            HardSkill? query = await repository
+            TitoloStudio? query = await repository
                 .RecuperaByIdAsync(id);
 
             if (query == null)
@@ -62,7 +62,7 @@ namespace HRManagement.Server.Controllers
                 return NotFound();
             }
 
-            List<HardSkill> risultato = new()
+            List<TitoloStudio?> risultato = new()
             {
                 query
             };
@@ -70,25 +70,26 @@ namespace HRManagement.Server.Controllers
             return Ok(risultato);
         }
 
-        // PUT: api/HardSkills/5
+        // PUT: api/TitoliStudio/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> PutHardSkill(int id, HardSkill hardSkill)
+        public async Task<IActionResult> PutTitoloStudio(int id, TitoloStudio titoloStudio)
         {
-            if (id != hardSkill.HardSkillID)
+            if (id != titoloStudio.TitoloStudioId)
             {
                 return BadRequest();
             }
+
             try
             {
-                await repository.AggiornaAsync(hardSkill);
+                await repository.AggiornaAsync(titoloStudio);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HardSkillEsiste(id))
+                if (!TitoloStudioEsiste(id))
                 {
                     return NotFound();
                 }
@@ -97,54 +98,53 @@ namespace HRManagement.Server.Controllers
                     throw;
                 }
             }
+
             return NoContent();
         }
 
-        // POST: api/HardSkills
+        // POST: api/TitoliStudio
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(201)]
-        public async Task<ActionResult<HardSkill>> PostHardSkill(HardSkill hardSkill)
+        public async Task<ActionResult<TitoloStudio>> PostTitoloStudio(TitoloStudio titoloStudio)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TitoliStudio == null!)
             {
-                return Problem("L'entità ApplicationDbContext.HardSkills è null.");
+                return Problem("L'entità ApplicationDbContext.TitoliStudio è null.");
             }
 
             await repository
-                .CreaAsync(hardSkill);
+                .CreaAsync(titoloStudio);
 
-            return CreatedAtAction("GetHardSkill", new { id = hardSkill.HardSkillID }, hardSkill);
+            return CreatedAtAction("GetTitoloStudio", new { id = titoloStudio.TitoloStudioId }, titoloStudio);
         }
 
-        // DELETE: api/HardSkills/5
+        // DELETE: api/TitoliStudio/5
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteHardSkill(int id)
+        public async Task<IActionResult> DeleteTitoloStudio(int id)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TitoliStudio == null)
             {
                 return NotFound();
             }
-            HardSkill? risultato = await repository
+            TitoloStudio? titoloStudio = await repository
                 .RecuperaByIdAsync(id);
 
-            if (risultato == null)
+            if (titoloStudio == null)
             {
                 return NotFound();
             }
 
-            await repository
-                .EliminaAsync(risultato);
+            await repository.EliminaAsync(titoloStudio);
 
             return NoContent();
         }
 
-        private bool HardSkillEsiste(int id)
+        private bool TitoloStudioEsiste(int id)
         {
-            return (repository.Context.HardSkills?
-                .Any(e => e.HardSkillID == id))
+            return (repository.Context.TitoliStudio?.Any(e => e.TitoloStudioId == id))
                 .GetValueOrDefault();
         }
     }

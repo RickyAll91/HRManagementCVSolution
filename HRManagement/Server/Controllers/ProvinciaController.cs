@@ -21,26 +21,26 @@ namespace HRManagement.Server.Controllers
             _context = context;
         }
 
-        // GET: api/Provincia
+        // GET: api/Provincie
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Provincium>>> GetProvincia()
+        public async Task<ActionResult<IEnumerable<Provincia>>> GetProvincia()
         {
-            if (_context.Provincia == null)
+            if (_context.Provincie == null)
             {
                 return NotFound();
             }
-            return await _context.Provincia.ToListAsync();
+            return await _context.Provincie.ToListAsync();
         }
 
-        // GET: api/Provincia/5
+        // GET: api/Provincie/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Provincium>> GetProvincium(int id)
+        public async Task<ActionResult<Provincia>> GetProvincium(int id)
         {
-            if (_context.Provincia == null)
+            if (_context.Provincie == null)
             {
                 return NotFound();
             }
-            var provincium = await _context.Provincia.FindAsync(id);
+            var provincium = await _context.Provincie.FindAsync(id);
 
             if (provincium == null)
             {
@@ -50,10 +50,10 @@ namespace HRManagement.Server.Controllers
             return provincium;
         }
 
-        // PUT: api/Provincia/5
+        // PUT: api/Provincie/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProvincium(int id, Provincium provincium)
+        public async Task<IActionResult> PutProvincium(int id, Provincia provincium)
         {
             if (id != provincium.ProvinciaId)
             {
@@ -81,36 +81,36 @@ namespace HRManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Provincia
+        // POST: api/Provincie
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Provincium>> PostProvincium(Provincium provincium)
+        public async Task<ActionResult<Provincia>> PostProvincium(Provincia provincium)
         {
-            if (_context.Provincia == null)
+            if (_context.Provincie == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Provincia'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Provincie'  is null.");
             }
-            _context.Provincia.Add(provincium);
+            _context.Provincie.Add(provincium);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetProvincium", new { id = provincium.ProvinciaId }, provincium);
         }
 
-        // DELETE: api/Provincia/5
+        // DELETE: api/Provincie/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProvincium(int id)
         {
-            if (_context.Provincia == null)
+            if (_context.Provincie == null)
             {
                 return NotFound();
             }
-            var provincium = await _context.Provincia.FindAsync(id);
+            var provincium = await _context.Provincie.FindAsync(id);
             if (provincium == null)
             {
                 return NotFound();
             }
 
-            _context.Provincia.Remove(provincium);
+            _context.Provincie.Remove(provincium);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace HRManagement.Server.Controllers
 
         private bool ProvinciumExists(int id)
         {
-            return (_context.Provincia?.Any(e => e.ProvinciaId == id)).GetValueOrDefault();
+            return (_context.Provincie?.Any(e => e.ProvinciaId == id)).GetValueOrDefault();
         }
     }
 }

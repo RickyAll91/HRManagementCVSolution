@@ -24,12 +24,12 @@ public partial class Sede
     public int Referente { get; set; }
 
     [InverseProperty("SedeColloquioNavigation")]
-    public virtual ICollection<Colloquio> Colloquios { get; set; } = new List<Colloquio>();
+    public virtual ICollection<Colloquio> Colloqui { get; set; } = new List<Colloquio>();
 
     [InverseProperty("SedeNavigation")]
-    public virtual ICollection<Dipendente> Dipendentes { get; set; } = new List<Dipendente>();
+    public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
 
     [ForeignKey("Referente")]
-    [InverseProperty("Sedes")]
+    [InverseProperty("Sedi")]
     public virtual Dipendente ReferenteNavigation { get; set; } = null!;
 }

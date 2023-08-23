@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using HRManagement.Server.Data;
 using HRManagement.Server.Repository;
 using HRManagement.Shared.Models;
@@ -9,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("La stringa di connessione 'DefaultConnection' non è stata trovata");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -26,7 +27,15 @@ builder.Services
     .AddAuthentication()
     .AddIdentityServerJwt();
 
-builder.Services.AddTransient(typeof(IApplicationRepository<>), typeof(ApplicationRepository<>));
+builder.Services
+    .AddTransient(typeof(IApplicationRepository<>), typeof(ApplicationRepository<>));
+
+builder.Services
+    .AddControllers()
+    .AddJsonOptions(x =>
+        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
 
 builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen();

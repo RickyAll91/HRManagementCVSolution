@@ -27,18 +27,18 @@ public partial class Colloquio
     public string Note { get; set; } = null!;
 
     [ForeignKey("HR")]
-    [InverseProperty("ColloquioHRNavigations")]
+    [InverseProperty("ColloquiHr")]
     public virtual Dipendente HRNavigation { get; set; } = null!;
 
     [ForeignKey("ReferenteTecnico")]
-    [InverseProperty("ColloquioReferenteTecnicoNavigations")]
+    [InverseProperty("ColloquiReferenteTecnico")]
     public virtual Dipendente? ReferenteTecnicoNavigation { get; set; }
 
     [ForeignKey("SedeColloquio")]
-    [InverseProperty("Colloquios")]
+    [InverseProperty("Colloqui")]
     public virtual Sede SedeColloquioNavigation { get; set; } = null!;
 
     [ForeignKey("TipologiaColloquio")]
-    [InverseProperty("Colloquios")]
+    [InverseProperty("Colloqui")]
     public virtual TipologiaColloquio TipologiaColloquioNavigation { get; set; } = null!;
 }

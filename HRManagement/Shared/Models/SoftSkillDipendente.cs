@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("SoftSkill_Dipendente")]
-public partial class SoftSkill_Dipendente
+public partial class SoftSkillDipendente
 {
     [Key]
     public int SoftSkillDipendenteId { get; set; }
@@ -14,10 +14,10 @@ public partial class SoftSkill_Dipendente
     public int SoftSkillId { get; set; }
 
     [ForeignKey("DipendenteId")]
-    [InverseProperty("SoftSkill_Dipendentes")]
-    public virtual Dipendente Dipendente { get; set; } = null!;
+    [InverseProperty("SoftSkillsDipendenti")]
+    public virtual Dipendente DipendenteNavigation { get; set; } = null!;
 
     [ForeignKey("SoftSkillId")]
-    [InverseProperty("SoftSkill_Dipendentes")]
-    public virtual SoftSkill SoftSkill { get; set; } = null!;
+    [InverseProperty("SoftSkillsDipendenti")]
+    public virtual SoftSkill SoftSkillNavigation { get; set; } = null!;
 }

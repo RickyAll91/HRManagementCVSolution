@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("HardSkill_Candidato")]
-public partial class HardSkill_Candidato
+public partial class HardSkillCandidato
 {
     [Key]
     public int HardSkillCandidatoId { get; set; }
@@ -14,10 +14,10 @@ public partial class HardSkill_Candidato
     public int HardSkillId { get; set; }
 
     [ForeignKey("CandidatoId")]
-    [InverseProperty("HardSkill_Candidatos")]
-    public virtual Candidato Candidato { get; set; } = null!;
+    [InverseProperty("HardSkillsCandidati")]
+    public virtual Candidato CandidatoNavigation { get; set; } = null!;
 
     [ForeignKey("HardSkillId")]
-    [InverseProperty("HardSkill_Candidatos")]
-    public virtual HardSkill HardSkill { get; set; } = null!;
+    [InverseProperty("HardSkillsCandidati")]
+    public virtual HardSkill HardSkillNavigation { get; set; } = null!;
 }

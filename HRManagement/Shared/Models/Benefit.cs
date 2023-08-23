@@ -14,6 +14,6 @@ public partial class Benefit
 
     public bool Attivo { get; set; }
 
-    [InverseProperty("Benefit")]
-    public virtual ICollection<Benefits_Contratti> Benefits_Contrattis { get; set; } = new List<Benefits_Contratti>();
+    [InverseProperty("BenefitNavigation")]
+    public virtual ICollection<BenefitContratto> BenefitsContratti { get; set; } = new List<BenefitContratto>();
 }

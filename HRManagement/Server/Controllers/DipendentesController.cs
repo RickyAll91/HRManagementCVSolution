@@ -21,26 +21,26 @@ namespace HRManagement.Server.Controllers
             _context = context;
         }
 
-        // GET: api/Dipendentes
+        // GET: api/Dipendenti
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Dipendente>>> GetDipendentes()
         {
-            if (_context.Dipendentes == null)
+            if (_context.Dipendenti == null)
             {
                 return NotFound();
             }
-            return await _context.Dipendentes.ToListAsync();
+            return await _context.Dipendenti.ToListAsync();
         }
 
-        // GET: api/Dipendentes/5
+        // GET: api/Dipendenti/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Dipendente>> GetDipendente(int id)
         {
-            if (_context.Dipendentes == null)
+            if (_context.Dipendenti == null)
             {
                 return NotFound();
             }
-            var dipendente = await _context.Dipendentes.FindAsync(id);
+            var dipendente = await _context.Dipendenti.FindAsync(id);
 
             if (dipendente == null)
             {
@@ -50,7 +50,7 @@ namespace HRManagement.Server.Controllers
             return dipendente;
         }
 
-        // PUT: api/Dipendentes/5
+        // PUT: api/Dipendenti/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutDipendente(int id, Dipendente dipendente)
@@ -81,36 +81,36 @@ namespace HRManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Dipendentes
+        // POST: api/Dipendenti
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Dipendente>> PostDipendente(Dipendente dipendente)
         {
-            if (_context.Dipendentes == null)
+            if (_context.Dipendenti == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Dipendentes'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Dipendenti'  is null.");
             }
-            _context.Dipendentes.Add(dipendente);
+            _context.Dipendenti.Add(dipendente);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetDipendente", new { id = dipendente.DipendenteId }, dipendente);
         }
 
-        // DELETE: api/Dipendentes/5
+        // DELETE: api/Dipendenti/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDipendente(int id)
         {
-            if (_context.Dipendentes == null)
+            if (_context.Dipendenti == null)
             {
                 return NotFound();
             }
-            var dipendente = await _context.Dipendentes.FindAsync(id);
+            var dipendente = await _context.Dipendenti.FindAsync(id);
             if (dipendente == null)
             {
                 return NotFound();
             }
 
-            _context.Dipendentes.Remove(dipendente);
+            _context.Dipendenti.Remove(dipendente);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace HRManagement.Server.Controllers
 
         private bool DipendenteExists(int id)
         {
-            return (_context.Dipendentes?.Any(e => e.DipendenteId == id)).GetValueOrDefault();
+            return (_context.Dipendenti?.Any(e => e.DipendenteId == id)).GetValueOrDefault();
         }
     }
 }

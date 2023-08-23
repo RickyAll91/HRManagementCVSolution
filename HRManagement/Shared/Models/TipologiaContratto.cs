@@ -15,8 +15,8 @@ public partial class TipologiaContratto
     public bool Attivo { get; set; }
 
     [InverseProperty("TipoContrattoNavigation")]
-    public virtual ICollection<Candidato> Candidatos { get; set; } = new List<Candidato>();
+    public virtual ICollection<Candidato> Candidati { get; set; } = new List<Candidato>();
 
     [InverseProperty("TipologiaContrattoNavigation")]
-    public virtual ICollection<Contratto> Contrattos { get; set; } = new List<Contratto>();
+    public virtual ICollection<Contratto> Contratti { get; set; } = new List<Contratto>();
 }

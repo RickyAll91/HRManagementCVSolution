@@ -6,55 +6,55 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HRManagement.Server.Data;
-using HRManagement.Server.Repository;
 using HRManagement.Shared.Models;
-using NuGet.Protocol.Core.Types;
+using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HardSkillsController : ControllerBase
+    public class TipologieColloquiController : ControllerBase
     {
-        private readonly IApplicationRepository<HardSkill> repository;
+        private readonly IApplicationRepository<TipologiaColloquio> repository;
 
-        public HardSkillsController(IApplicationRepository<HardSkill> repository)
+        public TipologieColloquiController(IApplicationRepository<TipologiaColloquio> repository)
         {
             this.repository = repository;
         }
 
-        // GET: api/HardSkills
+        // GET: api/TipologieColloqui
         [HttpGet]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TipologiaColloquio>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<IEnumerable<HardSkill>>> GetHardSkills()
+        public async Task<ActionResult<IEnumerable<TipologiaColloquio>>> GetTipiColloquio()
         {
-            if (repository.Context == null!)
+            if (repository.Context.TipologieColloqui == null!)
             {
                 return NotFound();
             }
-            IEnumerable<HardSkill> risultato = await repository
+
+            IEnumerable<TipologiaColloquio> risultato = await repository
                 .RecuperaTuttoAsync();
 
             if (!risultato.Any())
             {
                 return NotFound();
             }
-
             return Ok(risultato);
         }
 
-        // GET: api/HardSkills/5
+
+        // GET: api/TipologieColloqui/5
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<HardSkill>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<TipologiaColloquio>))]
         [ProducesResponseType(404)]
-        public async Task<ActionResult<HardSkill>> GetHardSkill(int id)
+        public async Task<ActionResult<TipologiaColloquio>> GetTipoColloquio(int id)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TipologieColloqui == null!)
             {
                 return NotFound();
             }
-            HardSkill? query = await repository
+            TipologiaColloquio? query = await repository
                 .RecuperaByIdAsync(id);
 
             if (query == null)
@@ -62,7 +62,7 @@ namespace HRManagement.Server.Controllers
                 return NotFound();
             }
 
-            List<HardSkill> risultato = new()
+            List<TipologiaColloquio> risultato = new()
             {
                 query
             };
@@ -70,25 +70,26 @@ namespace HRManagement.Server.Controllers
             return Ok(risultato);
         }
 
-        // PUT: api/HardSkills/5
+        // PUT: api/TipologieColloqui/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> PutHardSkill(int id, HardSkill hardSkill)
+        public async Task<IActionResult> PutTipoColloquio(int id, TipologiaColloquio tipoColloquio)
         {
-            if (id != hardSkill.HardSkillID)
+            if (id != tipoColloquio.TipoColloquioId)
             {
                 return BadRequest();
             }
+
             try
             {
-                await repository.AggiornaAsync(hardSkill);
+                await repository.AggiornaAsync(tipoColloquio);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HardSkillEsiste(id))
+                if (!TipoColloquioEsiste(id))
                 {
                     return NotFound();
                 }
@@ -97,54 +98,53 @@ namespace HRManagement.Server.Controllers
                     throw;
                 }
             }
+
             return NoContent();
         }
 
-        // POST: api/HardSkills
+        // POST: api/TipologieColloqui
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(201)]
-        public async Task<ActionResult<HardSkill>> PostHardSkill(HardSkill hardSkill)
+        public async Task<ActionResult<TipologiaColloquio>> PostTipoColloquio(TipologiaColloquio tipoColloquio)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TipologieColloqui == null!)
             {
-                return Problem("L'entità ApplicationDbContext.HardSkills è null.");
+                return Problem("L'entità ApplicationDbContext.TipologieColloqui è null.");
             }
 
             await repository
-                .CreaAsync(hardSkill);
+                .CreaAsync(tipoColloquio);
 
-            return CreatedAtAction("GetHardSkill", new { id = hardSkill.HardSkillID }, hardSkill);
+            return CreatedAtAction("GetTipoColloquio", new { id = tipoColloquio.TipoColloquioId }, tipoColloquio);
         }
 
-        // DELETE: api/HardSkills/5
+        // DELETE: api/TipologieColloqui/5
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> DeleteHardSkill(int id)
+        public async Task<IActionResult> DeleteTipoColloquio(int id)
         {
-            if (repository.Context.HardSkills == null!)
+            if (repository.Context.TipologieColloqui == null!)
             {
                 return NotFound();
             }
-            HardSkill? risultato = await repository
+            TipologiaColloquio? tipoColloquio = await repository
                 .RecuperaByIdAsync(id);
 
-            if (risultato == null)
+            if (tipoColloquio == null)
             {
                 return NotFound();
             }
 
-            await repository
-                .EliminaAsync(risultato);
+            await repository.EliminaAsync(tipoColloquio);
 
             return NoContent();
         }
 
-        private bool HardSkillEsiste(int id)
+        private bool TipoColloquioEsiste(int id)
         {
-            return (repository.Context.HardSkills?
-                .Any(e => e.HardSkillID == id))
+            return (repository.Context.TipologieColloqui?.Any(e => e.TipoColloquioId == id))
                 .GetValueOrDefault();
         }
     }

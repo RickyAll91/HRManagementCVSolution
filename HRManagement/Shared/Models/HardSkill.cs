@@ -14,9 +14,9 @@ public partial class HardSkill
 
     public bool Attivo { get; set; }
 
-    [InverseProperty("HardSkill")]
-    public virtual ICollection<HardSkill_Candidato> HardSkill_Candidatos { get; set; } = new List<HardSkill_Candidato>();
+    [InverseProperty("HardSkillNavigation")]
+    public virtual ICollection<HardSkillCandidato> HardSkillsCandidati { get; set; } = new List<HardSkillCandidato>();
 
-    [InverseProperty("HardSkill")]
-    public virtual ICollection<HardSkill_Dipendente> HardSkill_Dipendentes { get; set; } = new List<HardSkill_Dipendente>();
+    [InverseProperty("HardSkillNavigation")]
+    public virtual ICollection<HardSkillDipendente> HardSkillsDipendenti { get; set; } = new List<HardSkillDipendente>();
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HRManagement.Shared.Models;
 
-public partial class Provincium
+public partial class Provincia
 {
     [Key]
     public int ProvinciaId { get; set; }
@@ -12,5 +12,5 @@ public partial class Provincium
     public string Nome { get; set; } = null!;
 
     [InverseProperty("ProvinciaNavigation")]
-    public virtual ICollection<Comune> Comunes { get; set; } = new List<Comune>();
+    public virtual ICollection<Comune> Comuni { get; set; } = new List<Comune>();
 }

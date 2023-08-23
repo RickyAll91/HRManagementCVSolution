@@ -4,20 +4,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("Benefits_Contratti")]
-public partial class Benefits_Contratti
+public partial class BenefitContratto
 {
     [Key]
-    public int Benefits_ContrattiId { get; set; }
+    public int BenefitContrattoId { get; set; }
 
     public int ContrattoId { get; set; }
 
     public int? BenefitId { get; set; }
 
     [ForeignKey("BenefitId")]
-    [InverseProperty("Benefits_Contrattis")]
-    public virtual Benefit? Benefit { get; set; }
+    [InverseProperty("BenefitsContratti")]
+    public virtual Benefit? BenefitNavigation { get; set; }
 
     [ForeignKey("ContrattoId")]
-    [InverseProperty("Benefits_Contrattis")]
-    public virtual Contratto Contratto { get; set; } = null!;
+    [InverseProperty("BenefitsContratti")]
+    public virtual Contratto ContrattoNavigation { get; set; } = null!;
 }

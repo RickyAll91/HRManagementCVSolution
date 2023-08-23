@@ -9,6 +9,6 @@ namespace HRManagement.Shared.Models
     public class ApplicationUser : IdentityUser
     { 
         [InverseProperty("UtenteNavigation")]
-        public virtual ICollection<Dipendente> Dipendentes { get; set; } = new List<Dipendente>();
+        public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
     }
 }

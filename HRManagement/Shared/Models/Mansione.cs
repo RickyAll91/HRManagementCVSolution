@@ -15,5 +15,5 @@ public partial class Mansione
     public bool Attivo { get; set; }
 
     [InverseProperty("MansioneNavigation")]
-    public virtual ICollection<Dipendente> Dipendentes { get; set; } = new List<Dipendente>();
+    public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
 }

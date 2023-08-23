@@ -1,0 +1,73 @@
+﻿@page "/mansioni"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using HRManagement.Shared.Models
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Mansioni</PageTitle>
+
+<h1>Mansioni</h1>
+
+<a class="btn btn-primary" href="createhardskill">
+    <i class="oi oi-pencil"></i> Inserisci
+</a>
+
+    @if (mansioni == null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Skill</th>
+                <th>Attiva</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in mansioni)
+            {
+                <tr>
+                    <td>@m.Descrizione</td>
+                    @if (m.Attivo == true)
+                    {
+                        <td>Sì</td>
+                    }
+                    else
+                    {
+                        <td>No</td>
+                    }
+                    <td>
+                        <a class="btn btn-info" href="editmansione/@m.MansioneId">
+                            <i class="oi oi-pencil"></i> Modifica
+                        </a> 
+                        <a class="btn btn-danger" href="deletemansione/@m.MansioneId">
+                            <i class="oi oi-trash"></i> Elimina
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private List<Mansione>? mansioni;
+    private int? idRicerca;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            mansioni = await Http.GetFromJsonAsync<List<Mansione>>($"api/Mansioni/{idRicerca}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+}

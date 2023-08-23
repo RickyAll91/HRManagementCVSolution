@@ -14,9 +14,9 @@ public partial class SoftSkill
 
     public bool Attivo { get; set; }
 
-    [InverseProperty("SoftSkill")]
-    public virtual ICollection<SoftSkill_Candidato> SoftSkill_Candidatos { get; set; } = new List<SoftSkill_Candidato>();
+    [InverseProperty("SoftSkillNavigation")]
+    public virtual ICollection<SoftSkillCandidato> SoftSkillsCandidati { get; set; } = new List<SoftSkillCandidato>();
 
-    [InverseProperty("SoftSkill")]
-    public virtual ICollection<SoftSkill_Dipendente> SoftSkill_Dipendentes { get; set; } = new List<SoftSkill_Dipendente>();
+    [InverseProperty("SoftSkillNavigation")]
+    public virtual ICollection<SoftSkillDipendente> SoftSkillsDipendenti { get; set; } = new List<SoftSkillDipendente>();
 }

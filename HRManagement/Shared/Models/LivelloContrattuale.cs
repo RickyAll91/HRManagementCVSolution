@@ -15,5 +15,5 @@ public partial class LivelloContrattuale
     public bool Attivo { get; set; }
 
     [InverseProperty("LivelloContrattualeNavigation")]
-    public virtual ICollection<Contratto> Contrattos { get; set; } = new List<Contratto>();
+    public virtual ICollection<Contratto> Contratti { get; set; } = new List<Contratto>();
 }

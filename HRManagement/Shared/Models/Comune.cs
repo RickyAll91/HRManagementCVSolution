@@ -15,9 +15,9 @@ public partial class Comune
     public int Provincia { get; set; }
 
     [InverseProperty("ResidenzaNavigation")]
-    public virtual ICollection<Candidato> Candidatos { get; set; } = new List<Candidato>();
+    public virtual ICollection<Candidato> Candidati { get; set; } = new List<Candidato>();
 
     [ForeignKey("Provincia")]
-    [InverseProperty("Comunes")]
-    public virtual Provincium ProvinciaNavigation { get; set; } = null!;
+    [InverseProperty("Comuni")]
+    public virtual Provincia ProvinciaNavigation { get; set; } = null!;
 }

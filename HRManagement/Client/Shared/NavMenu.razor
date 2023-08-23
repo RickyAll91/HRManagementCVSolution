@@ -1,6 +1,6 @@
 ﻿<div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="">HRManagement</a>
+        <a class="navbar-brand" href="">HR Manager 0.1a</a>
         <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -13,29 +13,51 @@
                 <span class="oi oi-home" aria-hidden="true"></span> Home
             </NavLink>
         </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" @onclick="() => expandSubMenu = !expandSubMenu">
-                <span class="oi oi-list-rich" aria-hidden="true"></span>Menu
-            </NavLink>
-        </div>
-        @if (expandSubMenu)
-        {
+        <AuthorizeView>
             <div class="nav-item px-3">
-                <NavLink class="nav-link" href="fetchdata">
-                    <span class="oi oi-plus" aria-hidden="true"></span>Hard Skills
+                <NavLink class="nav-link" @onclick="() => expandSubMenu = !expandSubMenu">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>Anagrafiche
                 </NavLink>
             </div>
-        }
+            @if (expandSubMenu)
+            {
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="hardskills">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Hard Skills
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="softskills">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Soft Skills
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="titolistudio">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Titoli di Studio
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="livellicontratto">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Livelli Contrattuali
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="tipologiedocumenti">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Tipologie Documenti
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="mansioni">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Mansioni
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="sedi">
+                        <span class="oi oi-plus" aria-hidden="true"></span>Sedi
+                    </NavLink>
+                </div>
+            }
+        </AuthorizeView>
     </nav>
 </div>
 

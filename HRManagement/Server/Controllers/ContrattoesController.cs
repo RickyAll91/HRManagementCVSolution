@@ -25,22 +25,22 @@ namespace HRManagement.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Contratto>>> GetContrattos()
         {
-            if (_context.Contrattos == null)
+            if (_context.Contratti == null)
             {
                 return NotFound();
             }
-            return await _context.Contrattos.ToListAsync();
+            return await _context.Contratti.ToListAsync();
         }
 
         // GET: api/Contrattoes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Contratto>> GetContratto(int id)
         {
-            if (_context.Contrattos == null)
+            if (_context.Contratti == null)
             {
                 return NotFound();
             }
-            var contratto = await _context.Contrattos.FindAsync(id);
+            var contratto = await _context.Contratti.FindAsync(id);
 
             if (contratto == null)
             {
@@ -86,11 +86,11 @@ namespace HRManagement.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<Contratto>> PostContratto(Contratto contratto)
         {
-            if (_context.Contrattos == null)
+            if (_context.Contratti == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Contrattos'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Contratti'  is null.");
             }
-            _context.Contrattos.Add(contratto);
+            _context.Contratti.Add(contratto);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetContratto", new { id = contratto.ContrattoId }, contratto);
@@ -100,17 +100,17 @@ namespace HRManagement.Server.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteContratto(int id)
         {
-            if (_context.Contrattos == null)
+            if (_context.Contratti == null)
             {
                 return NotFound();
             }
-            var contratto = await _context.Contrattos.FindAsync(id);
+            var contratto = await _context.Contratti.FindAsync(id);
             if (contratto == null)
             {
                 return NotFound();
             }
 
-            _context.Contrattos.Remove(contratto);
+            _context.Contratti.Remove(contratto);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -118,7 +118,7 @@ namespace HRManagement.Server.Controllers
 
         private bool ContrattoExists(int id)
         {
-            return (_context.Contrattos?.Any(e => e.ContrattoId == id)).GetValueOrDefault();
+            return (_context.Contratti?.Any(e => e.ContrattoId == id)).GetValueOrDefault();
         }
     }
 }

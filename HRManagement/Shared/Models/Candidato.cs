@@ -40,20 +40,20 @@ public partial class Candidato
 
     public int? TipoContratto { get; set; }
 
-    [InverseProperty("Candidato")]
-    public virtual ICollection<HardSkill_Candidato> HardSkill_Candidatos { get; set; } = new List<HardSkill_Candidato>();
+    [InverseProperty("CandidatoNavigation")]
+    public virtual ICollection<HardSkillCandidato> HardSkillsCandidati { get; set; } = new List<HardSkillCandidato>();
 
     [ForeignKey("Residenza")]
-    [InverseProperty("Candidatos")]
+    [InverseProperty("Candidati")]
     public virtual Comune ResidenzaNavigation { get; set; } = null!;
 
-    [InverseProperty("Candidato")]
-    public virtual ICollection<SoftSkill_Candidato> SoftSkill_Candidatos { get; set; } = new List<SoftSkill_Candidato>();
+    [InverseProperty("CandidatoNavigation")]
+    public virtual ICollection<SoftSkillCandidato> SoftSkillCandidati { get; set; } = new List<SoftSkillCandidato>();
 
     [ForeignKey("TipoContratto")]
-    [InverseProperty("Candidatos")]
+    [InverseProperty("Candidati")]
     public virtual TipologiaContratto? TipoContrattoNavigation { get; set; }
 
-    [InverseProperty("Candidato")]
-    public virtual ICollection<TitoloStudio_Candidato> TitoloStudio_Candidatos { get; set; } = new List<TitoloStudio_Candidato>();
+    [InverseProperty("CandidatoNavigation")]
+    public virtual ICollection<TitoloStudioCandidato> TitoliStudioCandidati { get; set; } = new List<TitoloStudioCandidato>();
 }

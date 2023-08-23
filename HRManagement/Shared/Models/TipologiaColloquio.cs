@@ -13,5 +13,5 @@ public partial class TipologiaColloquio
     public string Descrizione { get; set; } = null!;
 
     [InverseProperty("TipologiaColloquioNavigation")]
-    public virtual ICollection<Colloquio> Colloquios { get; set; } = new List<Colloquio>();
+    public virtual ICollection<Colloquio> Colloqui { get; set; } = new List<Colloquio>();
 }
