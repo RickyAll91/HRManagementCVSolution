@@ -1,0 +1,59 @@
+﻿@page "/hardskills/aggiungi"
+@page "/hardskill/modifica/{SkillID:int}"
+@using HRManagement.Shared.Models
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>@Titolo Hard-Skill</h3>
+
+<EditForm Model="@skill" OnValidSubmit="SaveUser">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="Descrizione" class="form-label">Descrizione</label>
+        <div class="col-md-4">
+            <InputText id="Descrizione" class="form-control" @bind-Value="skill.Descrizione" />
+        </div>
+        <ValidationMessage For="@(() => skill.HardSkillID)" />
+    </div>
+    <div class="mb-3">
+        <label for="Attivo" class="form-label">Attivo</label>
+        <div class="col-md-4">
+            <InputCheckbox id="Attivo" @bind-Value="skill.Attivo" />
+        </div>
+        <ValidationMessage For="@(() => skill.Attivo)" />
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Salva</button>
+        <button class="btn btn-light" @onclick="Cancel">Cancella</button>
+    </div>
+</EditForm>
+@code {
+    [Parameter]
+    public int SkillId { get; set; }
+    protected string Titolo = "Aggiungi";
+    protected HardSkill skill = new();
+    protected override async Task OnParametersSetAsync()
+    {
+        if (SkillId != 0)
+        {
+            Titolo = "Modifica";
+            skill = (await Http.GetFromJsonAsync<List<HardSkill>>("api/HardSkills/" + SkillId))![0];
+        }
+    }
+    protected async Task SaveUser()
+    {
+        if (skill.HardSkillID != 0)
+        {
+            await Http.PutAsJsonAsync("api/HardSkills", skill);
+        }
+        else
+        {
+            await Http.PostAsJsonAsync("api/HardSkills", skill);
+        }
+        Cancel();
+    }
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo("/hardskills");
+    }
+}
