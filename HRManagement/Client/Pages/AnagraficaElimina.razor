@@ -14,16 +14,14 @@
             </tr>
             <tr>
                 <td>Attivo</td>
-                <td>
-                    @if (model.Attivo)
-                    {
+                @if (model.Attivo)
+                {
                     <td>Sì</td>
-                    }
-                    else
-                    {
+                }
+                else
+                {
                     <td>No</td>
-                    }
-                </td>
+                }
             </tr>
         </tbody>
     </table>
@@ -70,9 +68,9 @@
                 break;
         }
     }
-    protected async Task RemoveEntity(int userId)
+    protected async Task RemoveEntity(int id)
     {
-        await Http.DeleteAsync($"api/{Anagrafica}/{userId}");
+        await Http.DeleteAsync($"api/{Anagrafica}/{id}");
         Cancel();
     }
     void Cancel()

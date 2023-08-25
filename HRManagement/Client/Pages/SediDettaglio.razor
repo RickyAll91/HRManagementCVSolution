@@ -1,0 +1,110 @@
+﻿@page "/visualizza/sedi"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Sedi</PageTitle>
+
+<h1>Sedi</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-primary" href="/aggiungi/sedi"><i class="oi oi-pencil"></i>Inserisci</a>
+        <div class="input-group col">
+            <input type="text" class="form-control" placeholder="Trova elemento per ID"
+                   @bind="idRicerca" @bind:event="oninput" @onkeyup="OnInitializedAsync" />
+            @if (idRicerca != null)
+            {
+                <div class="input-group-append">
+                    <button class="btn btn-danger" @onclick="ResetSearch">
+                        <i class="oi oi-x"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (sedi == null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    if (sedi.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sede</th>
+                    <th>Indirizzo</th>
+                    <th>Recapito Telefonico</th>
+                    <th>Indirizzo e-Mail</th>
+                    <th>Referente</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var sede in sedi)
+                {
+                    <tr>
+                        <td>@sede.Descrizione</td>
+                        <td>@sede.Indirizzo</td>
+                        <td>@sede.RecapitoTelefonico</td>
+                        <td>@sede.EmailSede</td>
+                        <td>@sede.ReferenteNavigation.Nome @sede.ReferenteNavigation.Cognome</td>
+                        <td>
+                            <a class="btn btn-info" href="/modifica/sedi/@sede.SedeId">
+                                <i class="oi oi-pencil"></i> Modifica
+                            </a>
+                            <a class="btn btn-danger" href="elimina/sedi/@sede.SedeId">
+                                <i class="oi oi-trash"></i> Elimina
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col">
+                <AlertComponent IsDismissable="true"
+                                Icon="bi-exclamation-trianglefill"
+                                ColorTheme="warning"
+                                Title="Attenzione"
+                                Message="Nessun elemento per l'ID indicato." />
+            </div>
+        </div>
+    }
+
+}
+
+@code {
+
+    private List<Sede>? sedi;
+    private int? idRicerca;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            sedi = await Http.GetFromJsonAsync<List<Sede>>($"api/sedi/{idRicerca}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        catch (HttpRequestException)
+        {
+            sedi = new List<Sede>();
+        }
+    }
+    public async Task ResetSearch()
+    {
+        idRicerca = null;
+        await OnInitializedAsync();
+    }
+}

@@ -11,7 +11,7 @@ using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/sedi")]
     [ApiController]
     public class SediController : ControllerBase
     {
@@ -58,10 +58,9 @@ namespace HRManagement.Server.Controllers
             }
 
             IEnumerable<Sede> risultato = await repository.Context.Sedi
+                .Where(sede => sede.SedeId == id)
                 .Include(s => s.ReferenteNavigation)
-                .AsSplitQuery()
                 .ToListAsync();
-
 
             if (!risultato.Any())
             {

@@ -1,0 +1,57 @@
+﻿@page "/elimina/sedi/{Id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+<h2>Elimina Sede</h2>
+<br />
+<div class="form-group">
+    <h4>Vuoi eliminare questo elemento?</h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Descrizione</td>
+                <td>@Sede.Descrizione</td>
+            </tr>
+            <tr>
+                <td>Indirizzo</td>
+                <td>@Sede.Indirizzo</td>
+            </tr>
+            <tr>
+                <td>Recapito Telefonico</td>
+                <td>@Sede.RecapitoTelefonico</td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                <td>@Sede.EmailSede</td>
+            </tr>
+            <tr>
+                <td>Referente</td>
+                @if (Sede.ReferenteNavigation is not null)
+                {
+                    <td>@Sede.ReferenteNavigation.Nome @Sede.ReferenteNavigation.Cognome</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <input type="submit" value="Delete" @onclick="(async () => await RemoveEntity(Sede.SedeId))" class="btn btn-danger" />
+    <input type="submit" value="Cancel" @onclick="(() => Cancel())" class="btn btn-warning" />
+</div>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    protected Sede? Sede = new();
+    protected override async Task OnInitializedAsync()
+    {
+        Sede = (await Http.GetFromJsonAsync<List<Sede>>($"api/sedi/{Id}"))![0];
+    }
+    protected async Task RemoveEntity(int id)
+    {
+        await Http.DeleteAsync($"api/sedi/{id}");
+        Cancel();
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo($"/visualizza/sedi");
+    }
+}

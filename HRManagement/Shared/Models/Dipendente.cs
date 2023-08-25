@@ -35,18 +35,18 @@ public partial class Dipendente
 
     [ForeignKey("Contratto")]
     [InverseProperty("Dipendenti")]
-    public virtual Contratto ContrattoNavigation { get; set; } = null!;
+    public virtual Contratto? ContrattoNavigation { get; set; } = null!;
 
     [InverseProperty("DipendenteNavigation")]
     public virtual ICollection<HardSkillDipendente> HardSkillsDipendenti { get; set; } = new List<HardSkillDipendente>();
 
     [ForeignKey("Mansione")]
     [InverseProperty("Dipendenti")]
-    public virtual Mansione MansioneNavigation { get; set; } = null!;
+    public virtual Mansione? MansioneNavigation { get; set; } = null!;
 
     [ForeignKey("Sede")]
     [InverseProperty("Dipendenti")]
-    public virtual Sede SedeNavigation { get; set; } = null!;
+    public virtual Sede? SedeNavigation { get; set; } = null!;
 
     [InverseProperty("ReferenteNavigation")]
     public virtual ICollection<Sede> Sedi { get; set; } = new List<Sede>();

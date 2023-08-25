@@ -1,0 +1,89 @@
+﻿@page "/aggiungi/sedi"
+@page "/modifica/sedi/{Id:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>@Titolo Sedi</h3>
+<EditForm Model="@Sede" OnValidSubmit="SaveUser">
+    <DataAnnotationsValidator />
+    <div class="mb-3">
+        <label for="Descrizione" class="form-label">Descrizione</label>
+        <div class="col-md-4">
+            <InputText id="Descrizione" class="form-control" @bind-Value="Sede.Descrizione" />
+        </div>
+        <ValidationMessage For="@(() => Sede.Descrizione)" />
+    </div>
+    <div class="mb-3">
+        <label for="Indirizzo" class="form-label">Indirizzo</label>
+        <div class="col-md-4">
+            <InputText id="Indirizzo" @bind-Value="Sede.Indirizzo" />
+        </div>
+        <ValidationMessage For="@(() => Sede.Indirizzo)" />
+    </div>
+    <div class="mb-3">
+        <label for="Telefono" class="form-label">Recapito Telefonico</label>
+        <div class="col-md-4">
+            <InputText id="Telefono" @bind-Value="Sede.RecapitoTelefonico" />
+        </div>
+        <ValidationMessage For="@(() => Sede.RecapitoTelefonico)" />
+    </div>
+    <div class="mb-3">
+        <label for="Email" class="form-label">E-Mail</label>
+        <div class="col-md-4">
+            <InputText id="Email" @bind-Value="Sede.EmailSede" />
+        </div>
+        <ValidationMessage For="@(() => Sede.EmailSede)" />
+    </div>
+    <div class="mb-3">
+        <label for="NomeReferente" class="form-label">Referente</label>
+        <div class="col-md-4">
+            <InputSelect id="NomeReferente" @bind-Value="Sede.Referente">
+                @foreach (var e in Dipendenti)
+                {
+                    <option value="@e.DipendenteId">@e.Nome @e.Cognome</option>
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salva</button>
+            <button class="btn btn-light" @onclick="Cancel">Cancella</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+    public Sede? Sede = new();
+    protected string Titolo = "Aggiungi";
+    protected List<Dipendente>? Dipendenti = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Dipendenti = await Http.GetFromJsonAsync<List<Dipendente>>("api/dipendenti");
+
+        if (Id is not null)
+        {
+            Titolo = "Modifica";
+            Sede = (await Http.GetFromJsonAsync<List<Sede>>($"api/sedi/{Id}"))![0];
+        }
+    }
+    protected async Task SaveUser()
+    {
+        if (Sede.SedeId != 0)
+        {
+            await Http.PutAsJsonAsync($"api/sedi/{Id}", Sede);
+        }
+        else
+        {
+            await Http.PostAsJsonAsync($"api/sedi", Sede);
+        }
+        Cancel();
+    }
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo($"/visualizza/sedi");
+    }
+}

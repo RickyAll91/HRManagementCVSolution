@@ -31,5 +31,5 @@ public partial class Sede
 
     [ForeignKey("Referente")]
     [InverseProperty("Sedi")]
-    public virtual Dipendente ReferenteNavigation { get; set; } = null!;
+    public virtual Dipendente? ReferenteNavigation { get; set; } = null!;
 }

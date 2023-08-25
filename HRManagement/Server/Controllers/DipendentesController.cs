@@ -10,7 +10,7 @@ using HRManagement.Shared.Models;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/dipendenti")]
     [ApiController]
     public class DipendentesController : ControllerBase
     {
