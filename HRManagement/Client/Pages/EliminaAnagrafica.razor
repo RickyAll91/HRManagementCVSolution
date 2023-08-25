@@ -1,0 +1,82 @@
+﻿@page "/elimina/{Anagrafica}/{Id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IAnagraficaModel model
+<h2>Elimina @Anagrafica</h2>
+<br />
+<div class="form-group">
+    <h4>Vuoi eliminare questo elemento?</h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Descrizione</td>
+                <td>@model.Descrizione</td>
+            </tr>
+            <tr>
+                <td>Attivo</td>
+                <td>
+                    @if (model.Attivo)
+                    {
+                    <td>Sì</td>
+                    }
+                    else
+                    {
+                    <td>No</td>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <input type="submit" value="Delete" @onclick="(async () => await RemoveEntity(model.Id))" class="btn btn-danger" />
+    <input type="submit" value="Cancel" @onclick="(() => Cancel())" class="btn btn-warning" />
+</div>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public string Anagrafica { get; set; } = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        switch (Anagrafica)
+        {
+            case "hardskills":
+                model = (await Http.GetFromJsonAsync<List<HardSkill>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "softskills":
+                model = (await Http.GetFromJsonAsync<List<SoftSkill>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "titolistudio":
+                model = (await Http.GetFromJsonAsync<List<TitoloStudio>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "tipologiecolloqui":
+                model = (await Http.GetFromJsonAsync<List<TipologiaColloquio>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "tipologiecontratti":
+                model = (await Http.GetFromJsonAsync<List<TipologiaContratto>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "livellicontratti":
+                model = (await Http.GetFromJsonAsync<List<LivelloContrattuale>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "tipologiedocumenti":
+                model = (await Http.GetFromJsonAsync<List<TipologiaDocumento>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "mansioni":
+                model = (await Http.GetFromJsonAsync<List<Mansione>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+            case "benefits":
+                model = (await Http.GetFromJsonAsync<List<Benefit>>($"api/{Anagrafica}/{Id}"))![0];
+                break;
+        }
+    }
+    protected async Task RemoveEntity(int userId)
+    {
+        await Http.DeleteAsync($"api/{Anagrafica}/{userId}");
+        Cancel();
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo($"/visualizza/{Anagrafica}");
+    }
+}

@@ -11,7 +11,7 @@ using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tipologiedocumenti")]
     [ApiController]
     public class TipologiaDocumentiController : ControllerBase
     {
@@ -78,7 +78,7 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutTipoDocumento(int id, TipologiaDocumento tipoDocumento)
         {
-            if (id != tipoDocumento.TipoDocumentoId)
+            if (id != tipoDocumento.Id)
             {
                 return BadRequest();
             }
@@ -116,7 +116,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(tipoDocumento);
 
-            return CreatedAtAction("GetTipoDocumento", new { id = tipoDocumento.TipoDocumentoId }, tipoDocumento);
+            return CreatedAtAction("GetTipoDocumento", new { id = tipoDocumento.Id }, tipoDocumento);
         }
 
         // DELETE: api/TipologiaDocumenti/5
@@ -144,7 +144,7 @@ namespace HRManagement.Server.Controllers
 
         private bool TipoDocumentoEsiste(int id)
         {
-            return (repository.Context.TipologieDocumenti?.Any(e => e.TipoDocumentoId == id))
+            return (repository.Context.TipologieDocumenti?.Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

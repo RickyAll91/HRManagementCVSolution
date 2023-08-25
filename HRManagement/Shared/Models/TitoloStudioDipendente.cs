@@ -17,7 +17,7 @@ public partial class TitoloStudioDipendente
     [InverseProperty("TitoliStudioDipendenti")]
     public virtual Dipendente DipendenteNavigation { get; set; } = null!;
 
-    [ForeignKey("TitoloStudioId")]
+    [ForeignKey("Id")]
     [InverseProperty("TitoliStudioDipendenti")]
     public virtual TitoloStudio TitoloStudioNavigation { get; set; } = null!;
 }

@@ -12,7 +12,7 @@ using NuGet.Protocol.Core.Types;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/softskills")]
     [ApiController]
     public class SoftSkillsController : ControllerBase
     {
@@ -79,7 +79,7 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutSoftSkill(int id, SoftSkill skill)
         {
-            if (id != skill.SoftSkillId)
+            if (id != skill.Id)
             {
                 return BadRequest();
             }
@@ -117,7 +117,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(skill);
 
-            return CreatedAtAction("GetSoftSkill", new { id = skill.SoftSkillId }, skill);
+            return CreatedAtAction("GetSoftSkill", new { id = skill.Id }, skill);
         }
 
         // DELETE: api/TitoliStudio/5
@@ -145,7 +145,7 @@ namespace HRManagement.Server.Controllers
 
         private bool SoftSkillEsiste(int id)
         {
-            return (repository.Context.SoftSkills?.Any(e => e.SoftSkillId == id))
+            return (repository.Context.SoftSkills?.Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

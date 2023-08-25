@@ -1,0 +1,149 @@
+﻿@page "/visualizza/{Anagrafica}"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>@Anagrafica</PageTitle>
+
+<h1>@Anagrafica</h1>
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-primary" href="/aggiungi/@Anagrafica"><i class="oi oi-pencil"></i>Inserisci</a>
+        <div class="input-group col">
+            <input type="text" class="form-control" placeholder="Trova elemento per ID"
+                   @bind="idRicerca" @bind:event="oninput" @onkeyup="OnInitializedAsync" />
+            @if (idRicerca != null)
+            {
+                <div class="input-group-append">
+                    <button class="btn btn-danger" @onclick="ResetSearch">
+                        <i class="oi oi-x"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (list == null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    if (list.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Skill</th>
+                    <th>Attiva</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var element in list)
+                {
+                    <tr>
+                        <td>@element.Descrizione</td>
+                        @if (element.Attivo)
+                        {
+                            <td>Sì</td>
+                        }
+                        else
+                        {
+                            <td>No</td>
+                        }
+                        <td>
+                            <a class="btn btn-info" href="/modifica/@Anagrafica/@element.Id">
+                                <i class="oi oi-pencil"></i> Modifica
+                            </a>
+                            <a class="btn btn-danger" href="/elimina/@Anagrafica/@element.Id">
+                                <i class="oi oi-trash"></i> Elimina
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col">
+                <AlertComponent IsDismissable="true"
+                                Icon="bi-exclamation-trianglefill"
+                                ColorTheme="warning"
+                                Title="Attenzione"
+                                Message="Nessun elemento per l'ID indicato." />
+            </div>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public string Anagrafica { get; set; } = string.Empty;
+    private int? idRicerca;
+    private IEnumerable<IAnagraficaModel>? list;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            switch (Anagrafica)
+            {
+                case "hardskills":
+                    list = await Http.GetFromJsonAsync<List<HardSkill>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "softskills":
+                    list = await Http.GetFromJsonAsync<List<SoftSkill>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "titolistudio":
+                    list = await Http.GetFromJsonAsync<List<TitoloStudio>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "tipologiecolloqui":
+                    list = await Http.GetFromJsonAsync<List<TipologiaColloquio>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "tipologiecontratti":
+                    list = await Http.GetFromJsonAsync<List<TipologiaContratto>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "livellicontratti":
+                    list = await Http.GetFromJsonAsync<List<LivelloContrattuale>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "tipologiedocumenti":
+                    list = await Http.GetFromJsonAsync<List<TipologiaDocumento>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "mansioni":
+                    list = await Http.GetFromJsonAsync<List<Mansione>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                case "benefits":
+                    list = await Http.GetFromJsonAsync<List<Benefit>>($"api/{Anagrafica}/{idRicerca}");
+                    break;
+                default:
+                    list = new List<IAnagraficaModel>();
+                    break;
+            }
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        catch (HttpRequestException)
+        {
+            list = new List<IAnagraficaModel>();
+        }
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        await OnInitializedAsync();
+        await ResetSearch();
+    }
+
+    public async Task ResetSearch()
+    {
+        idRicerca = null;
+        await OnInitializedAsync();
+    }
+}

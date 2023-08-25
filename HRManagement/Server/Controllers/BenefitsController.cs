@@ -11,7 +11,7 @@ using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/benefits")]
     [ApiController]
     public class BenefitsController : ControllerBase
     {
@@ -76,7 +76,7 @@ namespace HRManagement.Server.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> PutBenefit(int id, Benefit benefit)
         {
-            if (id != benefit.BenefitId)
+            if (id != benefit.Id)
             {
                 return BadRequest();
             }
@@ -115,7 +115,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(benefit);
 
-            return CreatedAtAction("GetBenefit", new { id = benefit.BenefitId }, benefit);
+            return CreatedAtAction("GetBenefit", new { id = benefit.Id }, benefit);
         }
 
         // DELETE: api/Benefits/5
@@ -146,7 +146,7 @@ namespace HRManagement.Server.Controllers
 
         private bool BenefitEsiste(int id)
         {
-            return (repository.Context.Benefits?.Any(e => e.BenefitId == id))
+            return (repository.Context.Benefits?.Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

@@ -17,7 +17,7 @@ public partial class TitoloStudioCandidato
     [InverseProperty("TitoliStudioCandidati")]
     public virtual Candidato CandidatoNavigation { get; set; } = null!;
 
-    [ForeignKey("TitoloStudioId")]
+    [ForeignKey("Id")]
     [InverseProperty("TitoliStudioCandidati")]
     public virtual TitoloStudio TitoloStudioNavigation { get; set; } = null!;
 }

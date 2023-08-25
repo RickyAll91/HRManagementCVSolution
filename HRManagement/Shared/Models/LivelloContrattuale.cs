@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("LivelloContrattuale")]
-public partial class LivelloContrattuale
+public partial class LivelloContrattuale : IAnagraficaModel
 {
     [Key]
-    public int LivelloContrattoId { get; set; }
+    [Column("LivelloContrattoId")]
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string Descrizione { get; set; } = null!;

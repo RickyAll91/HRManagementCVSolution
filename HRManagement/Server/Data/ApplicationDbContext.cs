@@ -163,7 +163,6 @@ namespace HRManagement.Server.Data
 
             modelBuilder.Entity<Sede>(entity =>
             {
-                entity.Property(e => e.SedeId).ValueGeneratedNever();
 
                 entity.HasOne(d => d.ReferenteNavigation).WithMany(p => p.Sedi)
                     .OnDelete(DeleteBehavior.ClientSetNull)

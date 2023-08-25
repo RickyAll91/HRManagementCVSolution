@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("TipologiaDocumento")]
-public partial class TipologiaDocumento
+public partial class TipologiaDocumento : IAnagraficaModel
 {
     [Key]
-    public int TipoDocumentoId { get; set; }
+    [Column("TipoDocumentoId")]
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string Descrizione { get; set; } = null!;

@@ -13,7 +13,7 @@ public partial class BenefitContratto
 
     public int? BenefitId { get; set; }
 
-    [ForeignKey("BenefitId")]
+    [ForeignKey("Id")]
     [InverseProperty("BenefitsContratti")]
     public virtual Benefit? BenefitNavigation { get; set; }
 

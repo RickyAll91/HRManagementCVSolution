@@ -11,7 +11,7 @@ using HRManagement.Shared.Models;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/titolistudio")]
     [ApiController]
     public class TitoliStudioController : ControllerBase
     {
@@ -78,7 +78,7 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutTitoloStudio(int id, TitoloStudio titoloStudio)
         {
-            if (id != titoloStudio.TitoloStudioId)
+            if (id != titoloStudio.Id)
             {
                 return BadRequest();
             }
@@ -116,7 +116,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(titoloStudio);
 
-            return CreatedAtAction("GetTitoloStudio", new { id = titoloStudio.TitoloStudioId }, titoloStudio);
+            return CreatedAtAction("GetTitoloStudio", new { id = titoloStudio.Id }, titoloStudio);
         }
 
         // DELETE: api/TitoliStudio/5
@@ -144,7 +144,7 @@ namespace HRManagement.Server.Controllers
 
         private bool TitoloStudioEsiste(int id)
         {
-            return (repository.Context.TitoliStudio?.Any(e => e.TitoloStudioId == id))
+            return (repository.Context.TitoliStudio?.Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

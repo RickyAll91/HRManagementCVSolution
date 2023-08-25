@@ -17,7 +17,7 @@ public partial class HardSkillCandidato
     [InverseProperty("HardSkillsCandidati")]
     public virtual Candidato CandidatoNavigation { get; set; } = null!;
 
-    [ForeignKey("HardSkillId")]
+    [ForeignKey("Id")]
     [InverseProperty("HardSkillsCandidati")]
     public virtual HardSkill HardSkillNavigation { get; set; } = null!;
 }

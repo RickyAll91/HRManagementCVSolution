@@ -17,7 +17,7 @@ public partial class SoftSkillDipendente
     [InverseProperty("SoftSkillsDipendenti")]
     public virtual Dipendente DipendenteNavigation { get; set; } = null!;
 
-    [ForeignKey("SoftSkillId")]
+    [ForeignKey("Id")]
     [InverseProperty("SoftSkillsDipendenti")]
     public virtual SoftSkill SoftSkillNavigation { get; set; } = null!;
 }

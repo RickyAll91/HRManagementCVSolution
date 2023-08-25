@@ -11,7 +11,7 @@ using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tipologiecolloqui")]
     [ApiController]
     public class TipologieColloquiController : ControllerBase
     {
@@ -78,7 +78,7 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutTipoColloquio(int id, TipologiaColloquio tipoColloquio)
         {
-            if (id != tipoColloquio.TipoColloquioId)
+            if (id != tipoColloquio.Id)
             {
                 return BadRequest();
             }
@@ -116,7 +116,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(tipoColloquio);
 
-            return CreatedAtAction("GetTipoColloquio", new { id = tipoColloquio.TipoColloquioId }, tipoColloquio);
+            return CreatedAtAction("GetTipoColloquio", new { id = tipoColloquio.Id }, tipoColloquio);
         }
 
         // DELETE: api/TipologieColloqui/5
@@ -144,7 +144,7 @@ namespace HRManagement.Server.Controllers
 
         private bool TipoColloquioEsiste(int id)
         {
-            return (repository.Context.TipologieColloqui?.Any(e => e.TipoColloquioId == id))
+            return (repository.Context.TipologieColloqui?.Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

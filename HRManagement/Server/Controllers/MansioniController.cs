@@ -11,7 +11,7 @@ using HRManagement.Server.Repository;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/mansioni")]
     [ApiController]
     public class MansioniController : ControllerBase
     {
@@ -78,7 +78,7 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutMansione(int id, Mansione mansione)
         {
-            if (id != mansione.MansioneId)
+            if (id != mansione.Id)
             {
                 return BadRequest();
             }
@@ -114,7 +114,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(mansione);
 
-            return CreatedAtAction("GetMansione", new { id = mansione.MansioneId }, mansione);
+            return CreatedAtAction("GetMansione", new { id = mansione.Id }, mansione);
         }
 
         // DELETE: api/Mansioni/5
@@ -144,7 +144,7 @@ namespace HRManagement.Server.Controllers
         private bool MansioneEsiste(int id)
         {
             return (repository.Context.Mansioni?
-                .Any(e => e.MansioneId== id))
+                .Any(e => e.Id== id))
                 .GetValueOrDefault();
         }
     }

@@ -13,7 +13,7 @@ using HRManagement.Client.Pages;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/livellicontratti")]
     [ApiController]
     public class LivelliContrattualiController : ControllerBase
     {
@@ -45,7 +45,7 @@ namespace HRManagement.Server.Controllers
 
         // GET: api/HardSkills/5
         [HttpGet("{id}")]
-        [ProducesResponseType(200, Type = typeof(IEnumerable<LivelliContratto>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<LivelloContrattuale>))]
         [ProducesResponseType(404)]
         public async Task<ActionResult<HardSkill>> GetLivelloContratto(int id)
         {
@@ -77,7 +77,7 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(404)]
         public async Task<IActionResult> PutLivelloContratto(int id, LivelloContrattuale livelloContrattuale)
         {
-            if (id != livelloContrattuale.LivelloContrattoId)
+            if (id != livelloContrattuale.Id)
             {
                 return BadRequest();
             }
@@ -114,7 +114,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(livelloContrattuale);
 
-            return CreatedAtAction("GetLivelloContratto", new { id = livelloContrattuale.LivelloContrattoId }, livelloContrattuale);
+            return CreatedAtAction("GetLivelloContratto", new { id = livelloContrattuale.Id }, livelloContrattuale);
         }
 
         // DELETE: api/HardSkills/5
@@ -144,7 +144,7 @@ namespace HRManagement.Server.Controllers
         private bool LivelloContrattoEsiste(int id)
         {
             return (repository.Context.LivelliContrattuali?
-                .Any(e => e.LivelloContrattoId == id))
+                .Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

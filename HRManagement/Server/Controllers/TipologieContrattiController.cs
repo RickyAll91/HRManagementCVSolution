@@ -11,7 +11,7 @@ using HRManagement.Shared.Models;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/tipologiecontratti")]
     [ApiController]
     public class TipologieContrattiController : ControllerBase
     {
@@ -79,7 +79,7 @@ namespace HRManagement.Server.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> PutTipologiaContratto(int id, TipologiaContratto tipologiaContratto)
         {
-            if (id != tipologiaContratto.TipoContrattoId)
+            if (id != tipologiaContratto.Id)
             {
                 return BadRequest();
             }
@@ -118,7 +118,7 @@ namespace HRManagement.Server.Controllers
             await repository
                 .CreaAsync(tipologiaContratto);
 
-            return CreatedAtAction("GetTipologiaContratto", new { id = tipologiaContratto.TipoContrattoId }, tipologiaContratto);
+            return CreatedAtAction("GetTipologiaContratto", new { id = tipologiaContratto.Id }, tipologiaContratto);
         }
 
         // DELETE: api/TipologieContratti/5
@@ -144,7 +144,7 @@ namespace HRManagement.Server.Controllers
         private bool TipologiaContrattoEsiste(int id)
         {
             return (repository.Context.TipologieContratti?
-                .Any(e => e.TipoContrattoId == id))
+                .Any(e => e.Id == id))
                 .GetValueOrDefault();
         }
     }

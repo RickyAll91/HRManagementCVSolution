@@ -4,10 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace HRManagement.Shared.Models;
 
 [Table("HardSkill")]
-public partial class HardSkill
+public partial class HardSkill : IAnagraficaModel
 {
     [Key]
-    public int HardSkillID { get; set; }
+    [Column("HardSkillID")]
+    public int Id { get; set; }
 
     [StringLength(50)]
     public string Descrizione { get; set; } = null!;
