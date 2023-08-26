@@ -1,0 +1,102 @@
+﻿@page "/elimina/colloqui/{Id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+<h2>Elimina Colloquio</h2>
+<br />
+<div class="form-group">
+    <h4>Vuoi eliminare questo elemento?</h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Data Colloquio</td>
+                <td>@Colloquio.DataColloquio.ToShortDateString()</td>
+            </tr>
+            <tr>
+                <td>HR</td>
+                @if (Colloquio.HRNavigation is not null)
+                {
+                    <td>@Colloquio.HRNavigation.Nome @Colloquio.HRNavigation.Nome</td>
+                }
+            </tr>
+            <tr>
+                <td>Tipologia Colloquio</td>
+                @if (Colloquio.TipologiaColloquioNavigation is not null)
+                {
+                    <td>@Colloquio.TipologiaColloquioNavigation.Descrizione</td>
+                }
+            </tr>
+            <tr>
+                <td>Referente Tecnico</td>
+                @if (Colloquio.TipologiaColloquioNavigation is not null)
+                {
+                    @if (@Colloquio.TipologiaColloquioNavigation.Id == 2)
+                    {
+                        <td>@Colloquio.ReferenteTecnicoNavigation.Nome @Colloquio.ReferenteTecnicoNavigation.Cognome</td>
+                    }
+                    else
+                    {
+                        <td>Nessun referente tecnico.</td>
+                    }
+                }
+            </tr>
+            <tr>
+                <td>Sede</td>
+                @if (Colloquio.SedeColloquioNavigation is not null)
+                {
+                    <td>@Colloquio.SedeColloquioNavigation.Descrizione</td>
+                }
+            </tr>
+            <tr>
+                <td> Candidato</td>
+                @if (Colloquio.CandidatoNavigation is not null)
+                {
+                    <td>@Colloquio.CandidatoNavigation.Nome @Colloquio.CandidatoNavigation.Cognome</td>
+                }
+            </tr>
+            <tr>
+                <td>Valutazione</td>
+                @if (@Colloquio.Valutazione is not null)
+                {
+                    <td>@Colloquio.Valutazione</td>
+                }
+                else
+                {
+                    <td>Nessuna Valutazione Inserita.</td>
+                }
+            </tr>
+            <tr>
+                <td>Note</td>
+                @if (Colloquio.Note is not null)
+                {
+                    <td>@Colloquio.Note</td>
+                }
+                else
+                {
+                    <td>Nessuna Nota Inserita.</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <input type="submit" value="Delete" @onclick="(async () => await RemoveEntity(Colloquio.ColloquioId))" class="btn btn-danger" />
+    <input type="submit" value="Cancel" @onclick="(() => Cancel())" class="btn btn-warning" />
+</div>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    protected Colloquio? Colloquio = new();
+    protected override async Task OnInitializedAsync()
+    {
+        Colloquio = (await Http.GetFromJsonAsync<List<Colloquio>>($"api/colloqui/{Id}"))![0];
+    }
+    protected async Task RemoveEntity(int id)
+    {
+        await Http.DeleteAsync($"api/colloqui/{id}");
+        Cancel();
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo($"/visualizza/colloqui");
+    }
+}

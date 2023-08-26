@@ -105,6 +105,7 @@ namespace HRManagement.Server.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<Benefit>> PostBenefit(Benefit benefit)
         {
             if (repository.Context.Benefits == null!)

@@ -43,9 +43,12 @@ public partial class Candidato
     [InverseProperty("CandidatoNavigation")]
     public virtual ICollection<HardSkillCandidato> HardSkillsCandidati { get; set; } = new List<HardSkillCandidato>();
 
+    [InverseProperty("CandidatoNavigation")]
+    public virtual ICollection<Colloquio> ColloquioCandidato { get; set; } = new List<Colloquio>();
+
     [ForeignKey("Residenza")]
     [InverseProperty("Candidati")]
-    public virtual Comune ResidenzaNavigation { get; set; } = null!;
+    public virtual Comune? ResidenzaNavigation { get; set; } = null!;
 
     [InverseProperty("CandidatoNavigation")]
     public virtual ICollection<SoftSkillCandidato> SoftSkillCandidati { get; set; } = new List<SoftSkillCandidato>();

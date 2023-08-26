@@ -22,13 +22,19 @@ public partial class Colloquio
 
     public int Candidato { get; set; }
 
-    public string Valutazione { get; set; } = null!;
+    public string? Valutazione { get; set; } = null!;
 
-    public string Note { get; set; } = null!;
+    public string? Note { get; set; } = null!;
+
+    public DateTime DataColloquio { get; set; } = DateTime.Now;
 
     [ForeignKey("HR")]
     [InverseProperty("ColloquiHr")]
-    public virtual Dipendente HRNavigation { get; set; } = null!;
+    public virtual Dipendente? HRNavigation { get; set; } = null!;
+
+    [ForeignKey("Candidato")]
+    [InverseProperty("ColloquioCandidato")]
+    public virtual Candidato? CandidatoNavigation { get; set; } = null!;
 
     [ForeignKey("ReferenteTecnico")]
     [InverseProperty("ColloquiReferenteTecnico")]
@@ -36,9 +42,9 @@ public partial class Colloquio
 
     [ForeignKey("SedeColloquio")]
     [InverseProperty("Colloqui")]
-    public virtual Sede SedeColloquioNavigation { get; set; } = null!;
+    public virtual Sede? SedeColloquioNavigation { get; set; } = null!;
 
     [ForeignKey("TipologiaColloquio")]
     [InverseProperty("Colloqui")]
-    public virtual TipologiaColloquio TipologiaColloquioNavigation { get; set; } = null!;
+    public virtual TipologiaColloquio? TipologiaColloquioNavigation { get; set; } = null!;
 }

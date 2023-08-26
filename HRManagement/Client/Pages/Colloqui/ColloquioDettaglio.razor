@@ -1,0 +1,136 @@
+﻿@page "/visualizza/colloqui"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Colloqui</PageTitle>
+
+<h1>Sedi</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <a class="btn btn-primary" href="/aggiungi/colloqui"><i class="oi oi-pencil"></i>Inserisci</a>
+        <div class="input-group col">
+            <input type="text" class="form-control" placeholder="Trova elemento per ID"
+                   @bind="idRicerca" @bind:event="oninput" @onkeyup="OnInitializedAsync" />
+            @if (idRicerca != null)
+            {
+                <div class="input-group-append">
+                    <button class="btn btn-danger" @onclick="ResetSearch">
+                        <i class="oi oi-x"></i>
+                    </button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@if (colloqui == null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    if (colloqui.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Data Colloquio</th>
+                    <th>HR di Riferimento</th>
+                    <th>Tipologia di Colloquio</th>
+                    <th>Referente Tecnico</th>
+                    <th>Sede del Colloquio</th>
+                    <th>Nome Candidato</th>
+                    <th>Valutazione</th>
+                    <th>Note</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in colloqui)
+                {
+                    <tr>
+                        <td>@c.DataColloquio.ToShortDateString()</td>
+                        <td>@c.HRNavigation.Nome @c.HRNavigation.Cognome</td>
+                        <td>@c.TipologiaColloquioNavigation.Descrizione</td>
+                        @if (@c.TipologiaColloquioNavigation.Id == 2)
+                        {
+                            <td>@c.ReferenteTecnicoNavigation.Nome @c.ReferenteTecnicoNavigation.Cognome</td>
+                        }
+                        else
+                        {
+                            <td>Nessun referente tecnico.</td>
+                        }
+                        <td>@c.SedeColloquioNavigation.Descrizione</td>
+                        <td>@c.CandidatoNavigation.Nome @c.CandidatoNavigation.Cognome</td>
+                        @if (@c.Valutazione is not null)
+                        {
+                            <td>@c.Valutazione</td>
+                        }
+                        else
+                        {
+                            <td>Nessuna Valutazione Inserita.</td>
+                        }
+                        @if (c.Note is not null)
+                        {
+                            <td>@c.Note</td>
+                        }
+                        else
+                        {
+                            <td>Nessuna Nota Inserita.</td>
+                        }
+                        <td>
+                            <a class="btn btn-info" href="/modifica/colloqui/@c.ColloquioId">
+                                <i class="oi oi-pencil"></i> Modifica
+                            </a>
+                            <a class="btn btn-danger" href="elimina/colloqui/@c.ColloquioId">
+                                <i class="oi oi-trash"></i> Elimina
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="row">
+            <div class="col">
+                <AlertComponent IsDismissable="true"
+                                Icon="bi-exclamation-trianglefill"
+                                ColorTheme="warning"
+                                Title="Attenzione"
+                                Message="Nessun elemento per l'ID indicato." />
+            </div>
+        </div>
+    }
+
+}
+
+@code {
+    private List<Colloquio>? colloqui;
+    private int? idRicerca;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            colloqui = await Http.GetFromJsonAsync<List<Colloquio>>($"api/colloqui/{idRicerca}");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+        catch (HttpRequestException)
+        {
+            colloqui = new List<Colloquio>();
+        }
+    }
+    public async Task ResetSearch()
+    {
+        idRicerca = null;
+        await OnInitializedAsync();
+    }
+}
