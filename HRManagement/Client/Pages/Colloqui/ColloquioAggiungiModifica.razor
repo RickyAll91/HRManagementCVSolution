@@ -6,97 +6,113 @@
 @inject NavigationManager NavigationManager
 
 <h3>@Titolo Colloquio</h3>
-<EditForm Model="@Colloquio" OnValidSubmit="SaveUser">
-    <DataAnnotationsValidator />
-    <div class="mb-3">
-        <label for="Data" class="form-label">Data</label>
-        <div class="col-md-4">
-            <InputDate id="Data" class="form-control" @bind-Value="Colloquio.DataColloquio" placeholder/>
-        </div>
-        <ValidationMessage For="@(() => Colloquio.DataColloquio)" />
-    </div>
-    <div class="mb-3">
-        <label for="Hr" class="form-label">HR Assegnato</label>
-        <div class="col-md-4">
-            <InputSelect id="Hr" @bind-Value="Colloquio.HR">
-                <option label=" "></option>
-                @foreach (var e in HR)
-                {
-                    <option value="@e.DipendenteId">@e.Nome @e.Cognome</option>
-                }
-            </InputSelect>
-        </div>
-    </div>
-    <div class="mb-3">
-        <label for="TipoColloquio" class="form-label">Tipologia Di Colloquio</label>
-        <div class="col-md-4">
-            <InputSelect id="TipoCollloquio" @bind-Value="Colloquio.TipologiaColloquio">
-                <option label=" "></option>
-                @foreach (var t in TipologieColloquio)
-                {
-                    <option value="@t.Id">@t.Descrizione</option>
-                }
-            </InputSelect>
-        </div>
-    </div>
-    @if (Colloquio.TipologiaColloquio == 2)
-    {
+@if (Colloquio is null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    <EditForm Model="@Colloquio" OnValidSubmit="SaveUser">
+        <DataAnnotationsValidator />
         <div class="mb-3">
-            <label for="Tecnico" class="form-label">Referente Tecnico</label>
+            <label for="Data" class="form-label">Data</label>
             <div class="col-md-4">
-                <InputSelect id="Tecnico" @bind-Value="Colloquio.ReferenteTecnico">
-                    <option label=" "></option>
-                    @foreach (var r in ReferenteTecnico)
+                <InputDate id="Data" class="form-control" @bind-Value="Colloquio.DataColloquio" placeholder />
+            </div>
+            <ValidationMessage For="@(() => Colloquio.DataColloquio)" />
+        </div>
+        <div class="mb-3">
+            <label for="Hr" class="form-label">HR Assegnato</label>
+            <div class="col-md-4">
+                <InputSelect id="Hr" @bind-Value="Colloquio.HR">
+                    <option label=" ">Scegli un Opzione</option>
+                    @foreach (var e in HR!)
                     {
-                        <option value="@r.DipendenteId">@r.Nome @r.Cognome</option>
+                        <option value="@e.DipendenteId">@e.Nome @e.Cognome</option>
                     }
                 </InputSelect>
             </div>
         </div>
-    }
-    <div class="mb-3">
-        <label for="Sede" class="form-label">Sede Colloquio</label>
-        <div class="col-md-4">
-            <InputSelect id="Sede" @bind-Value="Colloquio.SedeColloquio">
-                <option label=" "></option>
-                @foreach (var s in Sedi)
-                {
-                    <option value="@s.SedeId">@s.Descrizione</option>
-                }
-            </InputSelect>
+        <div class="mb-3">
+            <label for="TipoColloquio" class="form-label">Tipologia Di Colloquio</label>
+            <div class="col-md-4">
+                <InputSelect id="TipoColloquio" @bind-Value="Colloquio.TipologiaColloquio">
+                    <option label=" ">Scegli un Opzione</option>
+                    @foreach (var t in TipologieColloquio!)
+                    {
+                        <option value="@t.Id">@t.Descrizione</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Colloquio.TipologiaColloquio)" />
+            </div>
         </div>
-    </div>
-    <div class="mb-3">
-        <label for="Candidato" class="form-label">Candidato</label>
-        <div class="col-md-4">
-            <InputSelect id="Candidato" @bind-Value="Colloquio.Candidato">
-                <option label=" "></option>
-                @foreach (var c in Candidati)
-                {
-                    <option value="@c.CandidatoId">@c.Nome @c.Cognome</option>
-                }
-            </InputSelect>
+        @if (Colloquio.TipologiaColloquio == 2)
+        {
+            <div class="mb-3">
+                <label for="Tecnico" class="form-label">Referente Tecnico</label>
+                <div class="col-md-4">
+                    <InputSelect id="Tecnico" @bind-Value="Colloquio.ReferenteTecnico">
+                        <option label=" ">Scegli un Opzione</option>
+                        @foreach (var r in ReferenteTecnico!)
+                        {
+                            <option value="@r.DipendenteId">@r.Nome @r.Cognome</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => Colloquio.ReferenteTecnico)" />
+                </div>
+            </div>
+        }
+        else
+        {
+            Colloquio.ReferenteTecnico = null;
+        }
+        <div class="mb-3">
+            <label for="Sede" class="form-label">Sede Colloquio</label>
+            <div class="col-md-4">
+                <InputSelect id="Sede" @bind-Value="Colloquio.SedeColloquio">
+                    <option label=" ">Scegli un Opzione</option>
+                    @foreach (var s in Sedi!)
+                    {
+                        <option value="@s.SedeId">@s.Descrizione</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Colloquio.SedeColloquio)" />
+            </div>
         </div>
-    </div>
-    <div class="mb-3">
-        <label for="Valutazione" class="form-label">Valutazione</label>
-        <div class="col-md-4">
-            <InputText id="Valutazione" @bind-Value="Colloquio.Valutazione" />
+        <div class="mb-3">
+            <label for="Candidato" class="form-label">Candidato</label>
+            <div class="col-md-4">
+                <InputSelect id="Candidato" @bind-Value="Colloquio.Candidato">
+                    <option label=" ">Scegli un Opzione</option>
+                    @foreach (var c in Candidati!)
+                    {
+                        <option value="@c.CandidatoId">@c.Nome @c.Cognome</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Colloquio.Candidato)" />
+            </div>
         </div>
-        <ValidationMessage For="@(() => Colloquio.Valutazione)" />
-    </div>
-    <div class="mb-3">
-        <label for="Note" class="form-label">Note</label>
-        <div class="col-md-4">
-            <InputText id="Note" @bind-Value="Colloquio.Note" />
+        <div class="mb-3">
+            <label for="Valutazione" class="form-label">Valutazione</label>
+            <div class="col-md-4">
+                <InputText id="Valutazione" @bind-Value="Colloquio.Valutazione" />
+            </div>
+            <ValidationMessage For="@(() => Colloquio.Valutazione)" />
         </div>
-        <ValidationMessage For="@(() => Colloquio.Note)" />
-    </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Salva</button>
-        <button class="btn btn-light" @onclick="Cancel">Cancella</button>
-    </div>
-</EditForm>
+        <div class="mb-3">
+            <label for="Note" class="form-label">Note</label>
+            <div class="col-md-4">
+                <InputText id="Note" @bind-Value="Colloquio.Note" />
+            </div>
+            <ValidationMessage For="@(() => Colloquio.Note)" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salva</button>
+            <button class="btn btn-light" @onclick="Cancel">Cancella</button>
+        </div>
+    </EditForm>
+}
+
 
 @code {
     [Parameter]
@@ -123,14 +139,10 @@
             Titolo = "Modifica";
             Colloquio = (await Http.GetFromJsonAsync<List<Colloquio>>($"api/colloqui/{Id}"))![0];
         }
-        else
-        {
-            
-        }
     }
     protected async Task SaveUser()
     {
-        if (Colloquio.TipologiaColloquio != 2)
+        if (Colloquio!.TipologiaColloquio != 2)
         {
             Colloquio.ReferenteTecnico = null;
         }

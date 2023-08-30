@@ -4,6 +4,7 @@ using HRManagement.Server.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRManagement.Server.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230828134509_Fixes")]
+    partial class Fixes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,7 +252,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Benefit", (string)null);
+                    b.ToTable("Benefit");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.BenefitContratto", b =>
@@ -276,7 +279,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("Benefits_Contratti", (string)null);
+                    b.ToTable("Benefits_Contratti");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Candidato", b =>
@@ -339,7 +342,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("TipoContratto");
 
-                    b.ToTable("Candidato", (string)null);
+                    b.ToTable("Candidato");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Colloquio", b =>
@@ -386,7 +389,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("TipologiaColloquio");
 
-                    b.ToTable("Colloquio", (string)null);
+                    b.ToTable("Colloquio");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Comune", b =>
@@ -409,7 +412,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Provincia");
 
-                    b.ToTable("Comune", (string)null);
+                    b.ToTable("Comune");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Contratto", b =>
@@ -442,7 +445,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("TipologiaContratto");
 
-                    b.ToTable("Contratto", (string)null);
+                    b.ToTable("Contratto");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Dipendente", b =>
@@ -491,7 +494,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Utente");
 
-                    b.ToTable("Dipendente", (string)null);
+                    b.ToTable("Dipendente");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.EsperienzaLavorativa", b =>
@@ -529,7 +532,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Mansione");
 
-                    b.ToTable("Esperienze", (string)null);
+                    b.ToTable("Esperienze");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.HardSkill", b =>
@@ -551,7 +554,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HardSkill", (string)null);
+                    b.ToTable("HardSkill");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.HardSkillCandidato", b =>
@@ -577,7 +580,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("HardSkill_Candidato", (string)null);
+                    b.ToTable("HardSkill_Candidato");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.HardSkillDipendente", b =>
@@ -603,7 +606,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("HardSkill_Dipendente", (string)null);
+                    b.ToTable("HardSkill_Dipendente");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.LivelloContrattuale", b =>
@@ -625,7 +628,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LivelloContrattuale", (string)null);
+                    b.ToTable("LivelloContrattuale");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Mansione", b =>
@@ -647,7 +650,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mansione", (string)null);
+                    b.ToTable("Mansione");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Provincia", b =>
@@ -665,7 +668,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("ProvinciaId");
 
-                    b.ToTable("Provincia", (string)null);
+                    b.ToTable("Provincia");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.Sede", b =>
@@ -703,7 +706,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Referente");
 
-                    b.ToTable("Sede", (string)null);
+                    b.ToTable("Sede");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.SoftSkill", b =>
@@ -725,7 +728,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SoftSkill", (string)null);
+                    b.ToTable("SoftSkill");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.SoftSkillCandidato", b =>
@@ -751,7 +754,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("SoftSkill_Candidato", (string)null);
+                    b.ToTable("SoftSkill_Candidato");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.SoftSkillDipendente", b =>
@@ -777,7 +780,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("SoftSkill_Dipendente", (string)null);
+                    b.ToTable("SoftSkill_Dipendente");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.TipologiaColloquio", b =>
@@ -799,7 +802,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipologiaColloquio", (string)null);
+                    b.ToTable("TipologiaColloquio");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.TipologiaContratto", b =>
@@ -821,7 +824,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipologiaContratto", (string)null);
+                    b.ToTable("TipologiaContratto");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.TipologiaDocumento", b =>
@@ -843,7 +846,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipologiaDocumento", (string)null);
+                    b.ToTable("TipologiaDocumento");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.TitoloStudio", b =>
@@ -865,7 +868,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TitoloStudio", (string)null);
+                    b.ToTable("TitoloStudio");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.TitoloStudioCandidato", b =>
@@ -891,7 +894,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("TitoloStudio_Candidato", (string)null);
+                    b.ToTable("TitoloStudio_Candidato");
                 });
 
             modelBuilder.Entity("HRManagement.Shared.Models.TitoloStudioDipendente", b =>
@@ -917,7 +920,7 @@ namespace HRManagement.Server.Data.Migrations
 
                     b.HasIndex("Id");
 
-                    b.ToTable("TitoloStudio_Dipendente", (string)null);
+                    b.ToTable("TitoloStudio_Dipendente");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -12,55 +12,55 @@ namespace HRManagement.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ComunesController : ControllerBase
+    public class ProvinciasController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
 
-        public ComunesController(ApplicationDbContext context)
+        public ProvinciasController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Comuni
+        // GET: api/Provincias
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Comune>>> GetComunes()
+        public async Task<ActionResult<IEnumerable<Provincia>>> GetProvincie()
         {
-            if (_context.Comuni == null)
+            if (_context.Provincie == null)
             {
                 return NotFound();
             }
-            return await _context.Comuni.ToListAsync();
+            return await _context.Provincie.ToListAsync();
         }
 
-        // GET: api/Comuni/5
+        // GET: api/Provincias/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Comune>> GetComune(int id)
+        public async Task<ActionResult<Provincia>> GetProvincia(int id)
         {
-            if (_context.Comuni == null)
+            if (_context.Provincie == null)
             {
                 return NotFound();
             }
-            var comune = await _context.Comuni.FindAsync(id);
+            var provincia = await _context.Provincie.FindAsync(id);
 
-            if (comune == null)
+            if (provincia == null)
             {
                 return NotFound();
             }
 
-            return comune;
+            return provincia;
         }
 
-        // PUT: api/Comuni/5
+        // PUT: api/Provincias/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutComune(int id, Comune comune)
+        public async Task<IActionResult> PutProvincia(int id, Provincia provincia)
         {
-            if (id != comune.ComuneId)
+            if (id != provincia.ProvinciaId)
             {
                 return BadRequest();
             }
 
-            _context.Entry(comune).State = EntityState.Modified;
+            _context.Entry(provincia).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace HRManagement.Server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ComuneExists(id))
+                if (!ProvinciaExists(id))
                 {
                     return NotFound();
                 }
@@ -81,44 +81,44 @@ namespace HRManagement.Server.Controllers
             return NoContent();
         }
 
-        // POST: api/Comuni
+        // POST: api/Provincias
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Comune>> PostComune(Comune comune)
+        public async Task<ActionResult<Provincia>> PostProvincia(Provincia provincia)
         {
-            if (_context.Comuni == null)
+            if (_context.Provincie == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Comuni'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Provincie'  is null.");
             }
-            _context.Comuni.Add(comune);
+            _context.Provincie.Add(provincia);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetComune", new { id = comune.ComuneId }, comune);
+            return CreatedAtAction("GetProvincia", new { id = provincia.ProvinciaId }, provincia);
         }
 
-        // DELETE: api/Comuni/5
+        // DELETE: api/Provincias/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteComune(int id)
+        public async Task<IActionResult> DeleteProvincia(int id)
         {
-            if (_context.Comuni == null)
+            if (_context.Provincie == null)
             {
                 return NotFound();
             }
-            var comune = await _context.Comuni.FindAsync(id);
-            if (comune == null)
+            var provincia = await _context.Provincie.FindAsync(id);
+            if (provincia == null)
             {
                 return NotFound();
             }
 
-            _context.Comuni.Remove(comune);
+            _context.Provincie.Remove(provincia);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ComuneExists(int id)
+        private bool ProvinciaExists(int id)
         {
-            return (_context.Comuni?.Any(e => e.ComuneId == id)).GetValueOrDefault();
+            return (_context.Provincie?.Any(e => e.ProvinciaId == id)).GetValueOrDefault();
         }
     }
 }

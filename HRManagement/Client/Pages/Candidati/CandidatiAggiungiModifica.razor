@@ -1,0 +1,126 @@
+﻿@page "/aggiungi/candidati"
+@page "/modifica/candidati/{Id:int}"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>@Titolo Candidato</h3>
+@if (Candidato is null || Residenze is null)
+{
+    <p><em>Caricamento...</em></p>
+}
+else
+{
+    <EditForm Model="@Candidato" OnValidSubmit="SaveUser">
+        <DataAnnotationsValidator />
+        <div class="mb-3">
+            <label for="Nome" class="form-label">Nome</label>
+            <div class="col-md-4">
+                <InputText id="Nome" class="form-control" @bind-Value="Candidato.Nome" placeholder />
+            </div>
+            <ValidationMessage For="@(() => Candidato.Nome)" />
+        </div>
+        <div class="mb-3">
+            <label for="Cognome" class="form-label">Cognome</label>
+            <div class="col-md-4">
+                <InputText id="Cognome" @bind-Value="Candidato.Cognome" />
+            </div>
+            <ValidationMessage For="@(() => Candidato.Cognome)" />
+        </div>
+        <div class="mb-3">
+            <div class="mb-3">
+                <label for="CF" class="form-label">Codice Fiscale</label>
+                <div class="col-md-4">
+                    <InputText id="CF" @bind-Value="Candidato.CF" />
+                    <ValidationMessage For="@(() => Candidato.CF)" />
+                </div>
+            </div>
+            <label for="ComuneNascita" class="form-label">Comune di Nascita</label>
+            <div class="col-md-4">
+                <InputText id="ComuneNascita" @bind-Value="Candidato.ComuneNascita" />
+                <ValidationMessage For="@(() => Candidato.ComuneNascita)" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="ProvinciaNascita" class="form-label">Provincia Nascita</label>
+            <div class="col-md-4">
+                <InputText id="ProvinciaNascita" @bind-Value="Candidato.ProvinciaNascita" />
+            </div>
+            <ValidationMessage For="@(() => Candidato.ProvinciaNascita)" />
+        </div>
+        <div class="mb-3">
+            <label for="StatoNascita" class="form-label">Stato Nascita</label>
+            <div class="col-md-4">
+                <InputText id="StatoNascita" @bind-Value="Candidato.StatoNascita" />
+                <ValidationMessage For="@(() => Candidato.StatoNascita)" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="Residenza" class="form-label">Residenza</label>
+            <div class="col-md-4">
+                <InputSelect id="Residenza" @bind-Value="Candidato.Residenza">
+                    <option label=" "></option>
+                    @foreach (var r in Residenze)
+                    {
+                        <option value="@r.ComuneId">@(r.Nome), Provincia di @r.ProvinciaNavigation.Nome</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => Candidato.Residenza)" />
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="RecapitoTel" class="form-label">Valutazione</label>
+            <div class="col-md-4">
+                <InputText id="RecapitoTel" @bind-Value="Candidato.RecapitoTelefonico" />
+            </div>
+            <ValidationMessage For="@(() => Candidato.RecapitoTelefonico)" />
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Note</label>
+            <div class="col-md-4">
+                <InputText id="email" @bind-Value="Candidato.Email" />
+            </div>
+            <ValidationMessage For="@(() => Candidato.Email)" />
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Salva</button>
+            <button class="btn btn-light" @onclick="Cancel">Cancella</button>
+        </div>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int? Id { get; set; }
+    public Candidato? Candidato = new();
+    public List<Comune>? Residenze = new();
+    protected string Titolo = "Aggiungi";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Residenze = await Http.GetFromJsonAsync<List<Comune>>("api/Comuni");
+        if (Id is not null)
+        {
+            Titolo = "Modifica";
+            Candidato = (await Http.GetFromJsonAsync<List<Candidato>>($"api/Candidati/{Id}"))![0];
+
+        }
+    }
+    protected async Task SaveUser()
+    {
+        if (Candidato!.CandidatoId != 0)
+        {
+            await Http.PutAsJsonAsync($"api/Candidati/{Id}", Candidato);
+        }
+        else
+        {
+            await Http.PostAsJsonAsync($"api/Candidati", Candidato);
+        }
+        Cancel();
+    }
+    public void Cancel()
+    {
+        NavigationManager.NavigateTo($"/visualizza/candidati");
+    }
+}

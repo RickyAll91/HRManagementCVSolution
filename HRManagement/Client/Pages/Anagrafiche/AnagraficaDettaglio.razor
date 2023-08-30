@@ -86,6 +86,10 @@ else
     public string Anagrafica { get; set; } = string.Empty;
     private int? idRicerca;
     private IEnumerable<IAnagraficaModel>? list;
+    private Dictionary<string, string> titolo = new()
+    {
+
+    };
 
     protected override async Task OnInitializedAsync()
     {

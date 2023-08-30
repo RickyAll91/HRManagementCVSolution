@@ -59,4 +59,6 @@ public partial class Candidato
 
     [InverseProperty("CandidatoNavigation")]
     public virtual ICollection<TitoloStudioCandidato> TitoliStudioCandidati { get; set; } = new List<TitoloStudioCandidato>();
+    [InverseProperty("CandidatoNavigation")]
+    public virtual ICollection<EsperienzaLavorativa>? EsperienzeLavorative { get; set; } = new List<EsperienzaLavorativa>();
 }

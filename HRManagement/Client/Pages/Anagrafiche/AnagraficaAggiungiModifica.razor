@@ -22,16 +22,16 @@ else
         <div class="mb-3">
             <label for="Descrizione" class="form-label">Descrizione</label>
             <div class="col-md-4">
-                <InputText id="Descrizione" class="form-control" @bind-Value="model.Descrizione" />
+                <InputText id="Descrizione" class="form-control" @bind-Value="model!.Descrizione" />
             </div>
-            <ValidationMessage For="@(() => model.Descrizione)" />
+            <ValidationMessage For="@(() => model!.Descrizione)" />
         </div>
         <div class="mb-3">
             <label for="Attivo" class="form-label">Attivo</label>
             <div class="col-md-4">
                 <InputCheckbox id="Attivo" @bind-Value="model.Attivo" />
             </div>
-            <ValidationMessage For="@(() => model.Attivo)" />
+            <ValidationMessage For="@(() => model!.Attivo)" />
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">Salva</button>

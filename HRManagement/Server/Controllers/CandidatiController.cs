@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace HRManagement.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[Controller]")]
     [ApiController]
     public class CandidatiController : ControllerBase
     {
@@ -25,7 +25,7 @@ namespace HRManagement.Server.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<Candidato>>> GetCandidati()
         {
-            if (repository.Context.Candidati == null)
+            if (repository.Context.Candidati == null!)
             {
                 return NotFound();
             }
@@ -45,17 +45,25 @@ namespace HRManagement.Server.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Candidato>> GetCandidato(int id)
+        public async Task<ActionResult<List<Candidato>>> GetCandidato(int id)
         {
-            if (repository.Context.Candidati == null)
+            if (repository.Context.Candidati == null!)
             {
                 return NotFound();
             }
 
-            Candidato? risultato = await repository
-                .RecuperaByIdAsync(id);
-
-            if (risultato == null)
+            List<Candidato>? risultato = await repository.Context.Candidati
+                .Include(e => e.HardSkillsCandidati)
+                .ThenInclude(e => e.HardSkillNavigation)
+                .Include(e => e.SoftSkillCandidati)
+                .ThenInclude(e => e.SoftSkillNavigation)
+                .Include(e => e.ResidenzaNavigation)
+                .ThenInclude(e => e.ProvinciaNavigation)
+                .Include(e => e.TipoContrattoNavigation)
+                .Where(e => e.CandidatoId == id)
+                .AsSplitQuery()
+                .ToListAsync();
+            if (risultato == null!)
             {
                 return NotFound();
             }
@@ -106,7 +114,7 @@ namespace HRManagement.Server.Controllers
             {
                 return Problem("L'entità ApplicationDbContext.Candidati è null.");
             }
-            
+
             await repository
                 .CreaAsync(candidato);
 
@@ -131,7 +139,7 @@ namespace HRManagement.Server.Controllers
             {
                 return NotFound();
             }
-            
+
             await repository.EliminaAsync(candidato);
 
             return NoContent();

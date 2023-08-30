@@ -24,6 +24,8 @@ namespace HRManagement.Server.Data
 
         public virtual DbSet<Dipendente> Dipendenti { get; set; }
 
+        public virtual DbSet<EsperienzaLavorativa> Esperienze { get; set; }
+
         public virtual DbSet<HardSkill> HardSkills { get; set; }
 
         public virtual DbSet<HardSkillCandidato> HardSkillsCandidati { get; set; }

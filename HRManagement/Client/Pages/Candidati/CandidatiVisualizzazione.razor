@@ -1,16 +1,16 @@
-﻿@page "/visualizza/sedi"
+﻿@page "/visualizza/candidati"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @attribute [Authorize]
 @inject HttpClient Http
 
-<PageTitle>Sedi</PageTitle>
+<PageTitle>Candidati</PageTitle>
 
-<h1>Sedi</h1>
+<h1>Candidati</h1>
 
 <div class="row">
     <div class="col-md-6">
-        <a class="btn btn-primary" href="/aggiungi/sedi"><i class="oi oi-pencil"></i>Inserisci</a>
+        <a class="btn btn-primary" href="/aggiungi/candidati"><i class="oi oi-pencil"></i>Inserisci</a>
         <div class="input-group col">
             <input type="text" class="form-control" placeholder="Trova elemento per ID"
                    @bind="idRicerca" @bind:event="oninput" @onkeyup="OnInitializedAsync" />
@@ -26,39 +26,44 @@
     </div>
 </div>
 
-@if (sedi == null)
+@if (candidati == null)
 {
     <p><em>Caricamento...</em></p>
 }
 else
 {
-    if (sedi.Any())
+    if (candidati.Any())
     {
         <table class="table">
             <thead>
                 <tr>
-                    <th>Sede</th>
-                    <th>Indirizzo</th>
+                    <th>Nome Candidato</th>
+                    <th>Comune di Nascita</th>
+                    <th>Provincia di Nascita</th>
+                    <th>Stato di Nascita</th>
                     <th>Recapito Telefonico</th>
-                    <th>Indirizzo e-Mail</th>
-                    <th>Referente</th>
+                    <th>Email</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var sede in sedi)
+                @foreach (var c in candidati)
                 {
                     <tr>
-                        <td>@sede.Descrizione</td>
-                        <td>@sede.Indirizzo</td>
-                        <td>@sede.RecapitoTelefonico</td>
-                        <td>@sede.EmailSede</td>
-                        <td>@sede.ReferenteNavigation!.Nome @sede.ReferenteNavigation.Cognome</td>
+                        <td>@c.Nome @c.Cognome</td>
+                        <td>@c.ComuneNascita</td>
+                        <td>@c.ProvinciaNascita</td>
+                        <td>@c.StatoNascita</td>
+                        <td>@c.RecapitoTelefonico</td>
+                        <td>@c.Email</td>
                         <td>
-                            <a class="btn btn-info" href="/modifica/sedi/@sede.SedeId">
+                            <a class="btn btn-primary" href="/dettaglio/candidati/@c.CandidatoId">
+                                <i class="oi oi-pencil"></i> Dettagli
+                            </a>
+                            <a class="btn btn-info" href="/modifica/candidati/@c.CandidatoId">
                                 <i class="oi oi-pencil"></i> Modifica
                             </a>
-                            <a class="btn btn-danger" href="elimina/sedi/@sede.SedeId">
+                            <a class="btn btn-danger" href="elimina/candidati/@c.CandidatoId">
                                 <i class="oi oi-trash"></i> Elimina
                             </a>
                         </td>
@@ -84,14 +89,14 @@ else
 
 @code {
 
-    private List<Sede>? sedi;
+    private List<Candidato>? candidati;
     private int? idRicerca;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-            sedi = await Http.GetFromJsonAsync<List<Sede>>($"api/sedi/{idRicerca}");
+            candidati = await Http.GetFromJsonAsync<List<Candidato>>($"api/Candidati/{idRicerca}");
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -99,7 +104,7 @@ else
         }
         catch (HttpRequestException)
         {
-            sedi = new List<Sede>();
+            candidati = new List<Candidato>();
         }
     }
     public async Task ResetSearch()

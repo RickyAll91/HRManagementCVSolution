@@ -17,4 +17,6 @@ public partial class Mansione : IAnagraficaModel
 
     [InverseProperty("MansioneNavigation")]
     public virtual ICollection<Dipendente> Dipendenti { get; set; } = new List<Dipendente>();
+    [InverseProperty("MansioneNavigation")]
+    public virtual ICollection<EsperienzaLavorativa> EsperienzeLavorative { get; set; } = new List<EsperienzaLavorativa>();
 }

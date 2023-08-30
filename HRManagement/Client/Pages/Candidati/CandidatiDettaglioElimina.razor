@@ -1,0 +1,139 @@
+﻿@page "/dettaglio/candidati/{Id:int}"
+@page "/elimina/candidati/{Id:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@if (Candidato is { ResidenzaNavigation: not null, TipoContrattoNavigation: not null })
+{
+    <h2>@titolo Candidato: @Candidato.Nome @Candidato.Cognome</h2>
+    <br />
+    @if (NavigationManager.Uri.Contains("elimina"))
+    {
+        <h4>Vuoi eliminare questo elemento?</h4>
+    }
+    <div class="form-group">
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>Nome Candidato</td>
+                    <td>@Candidato.Nome @Candidato.Cognome</td>
+                </tr>
+                <tr>
+                    <td>Comune, Provincia e Stato di Nascita</td>
+                    <td>@Candidato.ComuneNascita, @Candidato.ProvinciaNascita, @Candidato.StatoNascita</td>
+                </tr>
+                <tr>
+                    <td>Comune e Provincia di Residenza</td>
+                    <td>@(Candidato.ResidenzaNavigation.Nome), @Candidato.ResidenzaNavigation.ProvinciaNavigation.Nome</td>
+                </tr>
+                <tr>
+                    <td>Recapito Telefonico</td>
+                    <td>@Candidato.RecapitoTelefonico</td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td>@Candidato.Email</td>
+                </tr>
+                <tr>
+                    <td>Recapito Telefonico</td>
+                    <td>@Candidato.RecapitoTelefonico</td>
+                </tr>
+                @foreach (var e in Candidato.SoftSkillCandidati)
+                {
+                    <tr>
+                        <td>Soft Skill</td>
+                        <td>@e.SoftSkillNavigation.Descrizione</td>
+                    </tr>
+                }
+                @foreach (var e in Candidato.HardSkillsCandidati)
+                {
+                    <tr>
+                        <td>Hard Skill</td>
+                        <td>@e.HardSkillNavigation.Descrizione</td>
+                    </tr>
+                }
+                <tr>
+                    <td>Tipologia Ultimo Contratto</td>
+                    <td>@Candidato.TipoContrattoNavigation.Descrizione</td>
+                </tr>
+                <br />
+                <br />
+                <tr>
+                    <td><h6><b>Esperienze Lavorative</b></h6></td>
+                    <td></td>
+                </tr>
+                @if (EsperienzeCandidato is not null)
+                {
+                    foreach (var e in EsperienzeCandidato)
+                    {
+                        <tr>
+                            <td>Data Inizio</td>
+                            <td>@e.Inizio</td>
+                        </tr>
+                        <tr>
+                            <td>Data Fine</td>
+                            <td>@e.Fine</td>
+                        </tr>
+                        <tr>
+                            <td>Mansione</td>
+                            <td>@e.MansioneNavigation!.Descrizione</td>
+                        </tr>
+                        <tr>
+                            <td>Azienda</td>
+                            <td>@e.Azienda</td>
+                        </tr>
+                        <tr>
+                            <td>Descrizione Attività Svolte</td>
+                            <td>@e.Descrizione</td>
+                        </tr>
+                        <br />
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="form-group">
+        @if (NavigationManager.Uri.Contains("elimina"))
+        {
+            <input type="submit" value="Delete" @onclick="(async () => await RemoveEntity(Candidato.CandidatoId))" class="btn btn-danger" />
+        }
+        <input type="submit" value="Cancel" @onclick="(() => Cancel())" class="btn btn-warning" />
+    </div>
+}
+else
+{
+    <p><em>Caricamento...</em></p>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    protected Candidato? Candidato = new();
+    protected List<EsperienzaLavorativa>? Esperienze = new();
+    protected List<EsperienzaLavorativa>? EsperienzeCandidato = new();
+    private string titolo = "Dettaglio";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (NavigationManager.Uri.Contains("elimina"))
+        {
+            titolo = "Elimina";
+        }
+        Candidato = (await Http.GetFromJsonAsync<List<Candidato>>($"api/Candidati/{Id}"))![0];
+        Esperienze = await Http.GetFromJsonAsync<List<EsperienzaLavorativa>>("api/esperienze");
+        if (Esperienze is not null)
+        {
+            EsperienzeCandidato = Esperienze.Where(p => p.Candidato == Id).ToList();
+        }
+    }
+
+    protected async Task RemoveEntity(int id)
+    {
+        await Http.DeleteAsync($"api/Candidati/{id}");
+        await Http.DeleteAsync($"api/esperienze/{id}");
+        Cancel();
+    }
+    void Cancel()
+    {
+        NavigationManager.NavigateTo($"/visualizza/candidati");
+    }
+}

@@ -29,7 +29,7 @@
                 <td>Referente Tecnico</td>
                 @if (Colloquio.TipologiaColloquioNavigation is not null)
                 {
-                    @if (@Colloquio.TipologiaColloquioNavigation.Id == 2)
+                    @if (@Colloquio.TipologiaColloquioNavigation.Id == 2 && Colloquio.ReferenteTecnicoNavigation is not null)
                     {
                         <td>@Colloquio.ReferenteTecnicoNavigation.Nome @Colloquio.ReferenteTecnicoNavigation.Cognome</td>
                     }
